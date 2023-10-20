@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import ServiceItem from 'src/components/App/ServiceItem.vue';
+import ServiceItem from 'src/components/App/ServiceListItem/ServiceItem.vue';
 import { services as testServices } from 'src/data/services'
 
 const sortOptions = [

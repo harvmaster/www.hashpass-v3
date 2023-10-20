@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ServiceIcon from './ServiceIconWrapper.vue'
-import ServiceItemPopout from './ServiceListItem/ServiceItemPopout.vue'
+import ServiceItemPopout from './ServiceItemPopout.vue'
 
 interface Service {
   name: string; 

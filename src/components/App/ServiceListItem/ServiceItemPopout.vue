@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import ServiceIcon from 'components/App/ServiceIconWrapper.vue'
+import ServiceIcon from 'components/App/ServiceListItem/ServiceIconWrapper.vue'
 import HoverModal from 'components/Models/HoverModel.vue'
 
 interface Service {

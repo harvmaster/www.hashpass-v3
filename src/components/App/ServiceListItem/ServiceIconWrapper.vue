@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps } from 'vue'
-import DynamicLetterLogo from './DynamicLetterLogo.vue'
+import DynamicLetterLogo from 'components/App/misc/DynamicLetterLogo.vue'
 
 interface ServiceIconWrapperProps {
   name?: string;
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<ServiceIconWrapperProps>(), {
   letter: ''
 })
 
-const cancelContextMenu = (event) => {
+const cancelContextMenu = (event: any) => {
   event.preventDefault()
   event.stopPropagation()
   return false
