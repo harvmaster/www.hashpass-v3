@@ -106,10 +106,17 @@ defineExpose({
 
 // Handle Visibility
 const isVisible = ref(false)
+let timer
 const toggleVisibility = () => {
   isVisible.value = !isVisible.value
   nextTick(() => {
-    if (isVisible.value) hoverOffset.value = getModalOffset()
+    if (isVisible.value) {
+      hoverOffset.value = getModalOffset()
+    } else {
+      timer = setTimeout(() => {
+        hoverOffset.value = '0px'
+      }, 200)
+    }
   })
 }
 
@@ -134,6 +141,7 @@ const getModalOffset = () => {
 
   // Too High
   if (rect.y < 0) {
+    console.log('too high', rect.y)
     return `${(windowWidth * 0.025) + (rect.y * -1)}px` 
   }
   if (rect.y < windowWidth * 0.025) {
@@ -147,6 +155,7 @@ const getModalOffset = () => {
 
   // No Change
   return `0px`
+  // return hoverOffset.value
 }
 
 
