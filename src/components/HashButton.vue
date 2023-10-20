@@ -299,6 +299,7 @@
     panEndHeight.value = '0px'
     avgDelta.value = (avgDelta.value + value.delta.y) / 2
     panValue.value = value.offset.y
+    console.log(panValue)
     if (value.offset.y < 0) panValue.value = 0
   
     if (value.isFinal) {

@@ -49,6 +49,9 @@
           <q-input filled label="Notes" :model-value="serviceNotes"/>
         </div>
       </div>
+      <div class="col-12 q-pt-md row">
+        <q-btn class="col-12 border-radius-1" label="Copy Password" unelevated color="primary"/>
+      </div>
     </template>
   </hover-modal>
 </template>
@@ -63,6 +66,9 @@
 }
 .square {
   aspect-ratio: 1;
+}
+.border-radius-1 {
+  border-radius: 0.35em;
 }
 </style>
 
@@ -127,7 +133,8 @@ const serviceNotes = computed(() => {
 })
 
 const bubbleEmits = (event: string) => {
-  emit(event)
+  if (event != 'opened' && event != 'closed') return
+  emits(event)
 }
 
 
