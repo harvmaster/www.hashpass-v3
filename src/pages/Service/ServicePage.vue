@@ -37,19 +37,23 @@
 </style>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { FastAverageColor } from 'fast-average-color'
+import { QImg } from 'quasar';
+
+const route = useRoute()
 
 const momentum = 0.9;
-let momentumTimer;
+let momentumTimer: NodeJS.Timeout;
 const lastFiveScrolls = ref([0,0,0,0,0])
-const handleScroll = (value) => {
+const handleScroll = (value: TouchEvent) => {
   if (momentumTimer !== null) clearInterval(momentumTimer)
   if (value.isFirst) {
     lastFiveScrolls.value = [0,0,0,0,0]
   }
 
-  const clampValue = (value) => {
+  const clampValue = (value: number) => {
     const minValue = getWindowWidth() / 5;
     const maxValue = getWindowWidth()
     if (value < minValue) return minValue
@@ -107,6 +111,9 @@ const computeDefaultOffset = () => {
 onMounted(() => {
   computeDefaultOffset()
   window.addEventListener('resize', computeDefaultOffset)
+
+  // Get the Service information
+  
 }) 
 
 onUnmounted(() => {
@@ -114,19 +121,45 @@ onUnmounted(() => {
 })
 
 const logoColor = ref('#000000')
-const logoElement = ref<HTMLElement>(null)
-const getAverageColor = (e) => {
-  console.log(e)
-  console.log(logoElement.value.$el)
+const logoElement = ref<InstanceType<typeof QImg> | null>(null)
+const getAverageColor = () => {
+  if (!logoElement.value) return
   const element = logoElement.value.$el
   const imgContainer = element.querySelector('img')
-  console.log(imgContainer)
 
   const fac = new FastAverageColor();
   const color = fac.getColor(imgContainer, { algorithm: 'dominant' });
-  console.log(color)
 
   logoColor.value = color.hex
 }
 
+
+interface TouchEvent {
+    evt: {
+      isTrusted: boolean;
+    };
+    touch: boolean;
+    mouse: boolean;
+    position: {
+      top: number;
+      left: number;
+    };
+    direction: string;
+    isFirst: boolean;
+    isFinal: boolean;
+    duration: number;
+    distance: {
+      x: number;
+      y: number;
+    };
+    offset: {
+      x: number;
+      y: number;
+    };
+    delta: {
+      x: number;
+      y: number;
+    };
+  }
+  
 </script>
