@@ -248,7 +248,7 @@
   const panEndHeight = ref('0px')
 
   const hashFab = ref(null)
-  const algorithmSelector = ref(null)
+  const algorithmSelector = ref<InstanceType<typeof TabInput> | null>(null)
   
   const panStyles = computed(() => {
     if (isMinimized.value) return
@@ -288,9 +288,11 @@
     }
     if (isMinimized.value) {
       saveService.value = true
-      panEndHeight.value = 0
+      panEndHeight.value = '0px'
     }
     isMinimized.value = !isMinimized.value
+    
+    if (!algorithmSelector.value) return
     algorithmSelector.value.getDefaultAlgorithm()
     if (!isMinimized.value) algorithmSelector.value.initInputClock()
   }
