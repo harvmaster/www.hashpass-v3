@@ -40,6 +40,7 @@
 import { ref, computed } from 'vue';
 import ServiceItem from 'src/components/App/ServiceListItem/ServiceItem.vue';
 import { services as testServices } from 'src/data/services'
+import { useServiceStore } from 'stores/service'
 
 const sortOptions = [
   {
@@ -66,7 +67,9 @@ const setSort = (value: string) => {
 
 const search = ref('')
 
-const services = ref(testServices);
+const serviceStore = useServiceStore();
+
+const services = ref(serviceStore.services);
 const serviceList = computed(() => {
   return [...services.value].sort((a, b) => {
     if (sort.value === 'name') {

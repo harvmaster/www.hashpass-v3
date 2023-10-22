@@ -7,14 +7,17 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from './stores/user';
 import { useSecretStore } from './stores/secret';
 import { useTokenStore } from './stores/token';
+import { useServiceStore } from './stores/service';
 
 const router = useRouter()
 
 const userStore = useUserStore()
 const secretStore = useSecretStore()
 const tokenStore = useTokenStore()
+const serviceStore = useServiceStore()
 
 const loadStores = async () => {
+  serviceStore.loadServices()
   await secretStore.loadEncryptedSecret()
   if (!secretStore.encryptedSecret) {
     // return router.push('/onboard')
