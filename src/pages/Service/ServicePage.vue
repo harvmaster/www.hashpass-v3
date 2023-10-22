@@ -7,7 +7,7 @@
     </div>
     <div class="col-12 row shadow-up-1 bg-white content q-pa-md" :style="contentTransform" v-touch-pan.mouse.stop.prevent.vertical="handleScroll"> <!-- Content goes here -->
       <div class="col-12">
-        
+        {{ service.name }}
       </div>
     </div>
   </q-page>
@@ -42,7 +42,24 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { FastAverageColor } from 'fast-average-color'
 import { QImg } from 'quasar';
 
+import { useServiceStore } from 'stores/service'
+
+interface Service {
+  name: string; 
+  note?: string;
+  legacy: boolean;
+  encoding: string;   
+  logo: string;
+  domain: string;
+  dateUsed?: number;
+  dateAdded?: number;
+  timesUsed?: number;
+}
+
 const route = useRoute()
+const serviceStore = useServiceStore()
+
+const service = ref<Service | null>(null)
 
 const momentum = 0.9;
 let momentumTimer: NodeJS.Timeout;
@@ -113,7 +130,9 @@ onMounted(() => {
   window.addEventListener('resize', computeDefaultOffset)
 
   // Get the Service information
-  
+  const listService = serviceStore.services.find(service => service.name === route.params.service)
+  service.value = listService
+  console.log(service.value)
 }) 
 
 onUnmounted(() => {

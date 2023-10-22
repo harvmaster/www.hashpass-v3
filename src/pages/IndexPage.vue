@@ -20,7 +20,7 @@
       <transition-group
         name="flip-list"
       >
-        <service-item class="col-12 q-pa-sm" v-for="service of serviceList" :service="service" :key="service.name"/>
+        <service-item class="col-12 q-pa-sm" v-for="service of serviceList" :service="service" :key="service.name" @click="() => routeToService(service.name)"/>
       </transition-group>
     </div>
     
@@ -38,9 +38,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import ServiceItem from 'src/components/App/ServiceListItem/ServiceItem.vue';
 import { services as testServices } from 'src/data/services'
 import { useServiceStore } from 'stores/service'
+
+const router = useRouter()
 
 const sortOptions = [
   {
@@ -89,5 +92,7 @@ const serviceList = computed(() => {
   })
 })
 
-
+const routeToService = (name: string) => {
+  router.push('/service/' + name)
+}
 </script>

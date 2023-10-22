@@ -21,7 +21,7 @@
     
 
     <!-- Hover Modal with Contents -->
-    <service-item-popout ref="servicePopout" :service="service" />
+    <service-item-popout ref="servicePopout" :service="service" @click.prevent.stop="stopBubble"/>
   </div>
 </template>
 
@@ -96,6 +96,10 @@ const servicePopout = ref<InstanceType<typeof ServiceItemPopout> |null>(null)
 const toggleVisibility = () => {
   if (servicePopout.value === null) return
   servicePopout.value.toggleVisibility()
+}
+
+const stopBubble = (e: Event) => {
+  e.stopPropagation()
 }
 </script>
   

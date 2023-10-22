@@ -48,15 +48,24 @@ function generatePastelColor(seedString: string): [string, string] {
     return seed / 233280;
   };
 
-  const baseValue = 200; // Base value to ensure pastel colors
+  const baseValue = 150; // Base value to ensure pastel colors
+  const baseHue = Math.round(next() * 330);
 
   const getColor = () => {
-    const variation = (next() * 55) - 27.5; // Adjust the variation to ensure greater difference
-    const r = Math.round(baseValue + variation);
-    const g = Math.round(baseValue + variation * next());
-    const b = Math.round(baseValue + variation * next());
-    return `rgb(${r},${g},${b})`;
+    const hue = baseHue + Math.round(next() * 60) - 30;
+    // const saturation = Math.round(next() * 30) + 70;
+    const saturation = 70
+    const lightness = 72
+    // const lightness = Math.round(next() * 30) + 70;
+    return `hsl(${hue},${saturation}%,${lightness}%)`;
+    // const variation = (next() * 150) - 75; // Adjust the variation to ensure greater difference
+    // const r = Math.round(baseValue + variation);
+    // const g = Math.round(baseValue + variation * next());
+    // const b = Math.round(baseValue + variation * next());
+    // return `rgb(${r},${g},${b})`;
   };
+  // console.log(seed)
+  // console.log(next(), next(), next())
 
   return [getColor(), getColor()];
 }

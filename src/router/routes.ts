@@ -17,6 +17,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/settings', component: () => import('pages/SettingsPage.vue'), meta: { routePosition: 2} },
       { path: '/settings/pin', component: () => import('pages/Settings/PinChangePage.vue'), meta: { routePosition: 3} },
       { path: '/service', component: () => import('pages/Service/ServicePage.vue'), meta: { routePosition: 1} },
+      { path: '/service/:service', component: () => import('pages/Service/ServicePage.vue'), meta: { routePosition: 2} },
     ]
   },
   {
