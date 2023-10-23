@@ -58,7 +58,7 @@ const selectorStyle = computed(() => {
     borderRadius: '50%',
     zIndex: '1',
     opacity: 0.5,
-    transition: 'all 0.25s ease-out',
+    transition: 'all 0.25s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
     transform: `translateX(calc(0.75em + ${(index) * (width)}% + ${index}rem))`,
     backgroundColor: props.options[index].color
   } as unknown as StyleValue

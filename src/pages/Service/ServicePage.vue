@@ -1,13 +1,47 @@
 <template>
   <q-page class="row">
-    <div class="logo-container" :style="logoTransform">
-      <div class="fit" style="position: relative;">
-        <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/>
+    <div class="logo-container" :style="logoColorClass">
+      <div class="fit" style="position: relative;" :style="logoTransform">
+        <q-img :src="service?.logo" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/>
+        <!-- <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/> -->
       </div>
     </div>
     <div class="col-12 row shadow-up-1 bg-white content q-pa-md" :style="contentTransform" v-touch-pan.mouse.stop.prevent.vertical="handleScroll"> <!-- Content goes here -->
-      <div class="col-12">
-        {{ service?.name }}
+      <div class="col-12 row">
+        <div class="col-12 text-h5 text-weight-bold no-margin">
+          {{ service?.name }}
+        </div>
+        <div class="col-12 text-subtitle">
+          {{ service?.domain }}
+        </div>
+      </div>
+      <div class="col-12 q-py-sm">
+        <q-separator class="col-12" />
+      </div>
+      <div class="col-12 row rounded-borders q-pa-sm">
+        <div class="col-12 row">
+          <div class="col-auto q-pr-sm text-weight-bold">
+            Username: 
+          </div>
+          <div class="col-auto text-weight-bold">
+            {{ service?.note }}
+          </div>
+        </div>
+        <div class="col-12 row items-center ">
+          <!-- <div class="col-auto">
+            <q-btn class="" round flat :icon="!showPassword ? 'visibility' : 'visibility_off'"  @click="togglePassword"/>
+          </div> -->
+          <div class="col-auto q-px-sm text-weight-bold password bg-grey-3" @click="togglePassword">
+            {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 q-py-sm">
+        <q-separator class="" />
+      </div>
+      <div class="col-12 row">
+        <algorithm-selector class="col-12" />
+        <!-- <q-input filled label="Notes" :model-value="service?.note"/> -->
       </div>
     </div>
   </q-page>
@@ -34,6 +68,9 @@
   height: fit-content;
   border-radius: 1em 1em 0 0;
 }
+.password {
+  letter-spacing: 3px;
+}
 </style>
 
 <script setup lang="ts">
@@ -43,6 +80,9 @@ import { FastAverageColor } from 'fast-average-color'
 import { QImg } from 'quasar';
 
 import { useServiceStore } from 'stores/service'
+
+import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
+// import AlgorithmSelector from 'src/components/Inputs/AlgorithmSelector.vue'
 
 interface Service {
   name: string; 
@@ -106,8 +146,9 @@ const handleScroll = (value: TouchEvent) => {
 const logoOffset = ref(-50)
 const logoTransform = computed(() => {
   const transform = (contentOffset.value - (getWindowWidth())) / 2
+  const scale = 1 + (transform / (getWindowWidth() * 0.7))
   return {
-    transform: `translateY(${transform}px)`,
+    transform: `translateY(${transform}px) scale(${scale})`,
     backgroundColor: logoColor.value
   }
 })
@@ -115,6 +156,12 @@ const logoTransform = computed(() => {
 const contentOffset = ref(0);
 const contentTransform = computed(() => {
   return `transform: translateY(${contentOffset.value}px)`
+})
+
+const logoColorClass = computed(() => {
+  return {
+    backgroundColor: logoColor.value
+  }
 })
 
 const getWindowWidth = () => {
@@ -150,6 +197,11 @@ const getAverageColor = () => {
   const color = fac.getColor(imgContainer, { algorithm: 'dominant' });
 
   logoColor.value = color.hex
+}
+
+const showPassword = ref(false)
+const togglePassword = () => {
+  showPassword.value = !showPassword.value
 }
 
 
