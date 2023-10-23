@@ -1,5 +1,5 @@
 <template>
-  <hover-modal ref="hoverModal" @opened="bubbleEmits" @closed="bubbleEmits">
+  <hover-modal ref="hoverModal" @opened="() => bubbleEmits('opened')" @closed="() => handleClose('closed')">
     <template v-slot:content>
 
       <div class="col-12 row">
@@ -46,11 +46,11 @@
       <div class="col-12 q-pt-sm row">
         <!-- Notes input -->
         <div class="col-12 bg-grey-2 rounded-borders">
-          <q-input filled label="Notes" :model-value="serviceNotes"/>
+          <q-input :disable="disableInteractableContent" filled label="Notes" :model-value="serviceNotes"/>
         </div>
       </div>
       <div class="col-12 q-pt-md row">
-        <q-btn class="col-12 border-radius-1" label="Copy Password" unelevated color="primary"/>
+        <q-btn :disable="disableInteractableContent" class="col-12 border-radius-1" label="Copy Password" unelevated color="primary"/>
       </div>
     </template>
   </hover-modal>
@@ -116,10 +116,23 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
+const disableInteractableContent = ref(true)
+
 const hoverModal = ref<InstanceType<typeof HoverModal> |null>(null)
 const toggleVisibility = () => {
   if (hoverModal.value === null) return
   hoverModal.value.toggleVisibility()
+
+  console.log(hoverModal.value.isVisible())
+  // Start timeout to show interactable content due to bug where v-touch-hold focuses text box when it appears
+  if (hoverModal.value.isVisible()) {
+    setTimeout(() => {
+      disableInteractableContent.value = false
+    }, 300)
+  } else {
+    console.log('disabled')
+    disableInteractableContent.value = true
+  }
 }
 
 const serviceUsername = computed(() => {
@@ -131,6 +144,12 @@ const serviceNotes = computed(() => {
   const postUsername = props.service.note?.split('username: ')[1]?.split('\n')[1] || ''
   return `${preUsername}${postUsername}`
 })
+
+const handleClose = (event: string) => {
+  if (event != 'opened' && event != 'closed') return
+  disableInteractableContent.value = true
+  emits(event)
+}
 
 const bubbleEmits = (event: string) => {
   if (event != 'opened' && event != 'closed') return

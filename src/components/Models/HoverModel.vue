@@ -102,7 +102,9 @@ const animation = ref('scale-fade')
 // const emits = defineEmits(['opened', 'closed'])
 defineExpose({
   toggleVisibility: () => toggleVisibility(),
+  isVisible: () => isVisible.value
 })
+const emits = defineEmits(['opened', 'closed'])
 
 // Handle Visibility
 const isVisible = ref(false)
@@ -118,6 +120,8 @@ const toggleVisibility = () => {
       }, 200)
     }
   })
+
+  emits(isVisible.value ? 'opened' : 'closed')
 }
 
 // Close when user pans on background

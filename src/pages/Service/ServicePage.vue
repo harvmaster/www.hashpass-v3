@@ -7,7 +7,7 @@
     </div>
     <div class="col-12 row shadow-up-1 bg-white content q-pa-md" :style="contentTransform" v-touch-pan.mouse.stop.prevent.vertical="handleScroll"> <!-- Content goes here -->
       <div class="col-12">
-        {{ service.name }}
+        {{ service?.name }}
       </div>
     </div>
   </q-page>
@@ -59,7 +59,7 @@ interface Service {
 const route = useRoute()
 const serviceStore = useServiceStore()
 
-const service = ref<Service | null>(null)
+const service = ref<Service | null | undefined>(null)
 
 const momentum = 0.9;
 let momentumTimer: NodeJS.Timeout;

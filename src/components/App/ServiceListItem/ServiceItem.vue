@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div class="row" v-touch-hold:500="toggleVisibility">
+    <div class="row" v-touch-hold.prevent.stop:250="toggleVisibility">
       <div class="col-auto row items-center">
         <service-icon class="service-logo square" :logo="logo" :name="service.name"/>
       </div>
@@ -93,13 +93,17 @@ const togglePassword = () => {
 }
 
 const servicePopout = ref<InstanceType<typeof ServiceItemPopout> |null>(null)
-const toggleVisibility = () => {
+const toggleVisibility = (e: Event) => {
+ console.log('toggle', e) 
   if (servicePopout.value === null) return
   servicePopout.value.toggleVisibility()
+  e.evt.preventDefault()
+  e.evt.stopPropagation()
 }
 
 const stopBubble = (e: Event) => {
-  e.stopPropagation()
+  // e.stopPropagation()
+  // console.log('stop')
 }
 </script>
   
