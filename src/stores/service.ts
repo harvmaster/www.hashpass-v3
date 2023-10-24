@@ -4,18 +4,6 @@ import { api } from 'src/boot/axios';
 import { encrypt, decrypt } from 'src/crypto/aes'
 import Services from 'src/data/services'
 
-interface Service {
-  name: string; 
-  note?: string;
-  legacy: boolean;
-  encoding: string;   
-  logo: string;
-  domain: string;
-  dateUsed?: number;
-  dateAdded?: number;
-  timesUsed?: number;
-}
-
 interface ServiceStore {
   services: Service[];
 }

@@ -6,24 +6,72 @@
         <!-- <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/> -->
       </div>
     </div>
-    <div class="col-12 row shadow-up-1 bg-white content q-pa-md" :style="contentTransform" v-touch-pan.mouse.stop.prevent.vertical="handleScroll"> <!-- Content goes here -->
+    <div class="col-12 row shadow-up-1 bg-grey-1 content q-pa-md" :style="contentTransform" v-touch-pan.mouse.stop.prevent.vertical="handleScroll"> <!-- Content goes here -->
       <div class="col-12 row">
-        <div class="col-12 text-h5 text-weight-bold no-margin">
-          {{ service?.name }}
-        </div>
-        <div class="col-12 text-subtitle">
-          {{ service?.domain }}
+        <div class="bg-white">
+          <div class="col-12 text-h5 text-weight-bold no-margin">
+            {{ service?.name }}
+          </div>
+          <div class="col-12 text-subtitle">
+            {{ service?.domain }}
+          </div>
         </div>
       </div>
-      <div class="col-12 q-py-sm">
-        <q-separator class="col-12" />
+
+      <div class="col-12 q-py-sm" />
+
+      <div class="col-12 row content-container">
+        <div class="col-12 text-primary">
+          Username
+        </div>
+        <div class="col-12 content-focus q-py-sm">
+          {{ service?.note }}
+        </div>
       </div>
-      <div class="col-12 row rounded-borders q-pa-sm">
+
+      <div class="col-12 q-py-sm" />
+
+      <div class="col-12 row content-container">
+        <div class="col-12 text-primary">
+          Password
+        </div>
+        <div class="col-12 text-weight-bold q-py-sm  password" @click="togglePassword">
+          {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+        </div>
+      </div>
+
+      <div class="col-12 q-py-sm" />
+
+      <div class="col-12 row content-container">
+        <div class="col-12 text-primary">
+          Algorithm
+        </div>
+        <div class="col-12 q-py-sm">
+          <algorithm-selector />
+        </div>
+      </div>
+
+      <div class="col-12 q-py-sm" />
+
+      <div class="col-12 row content-container">
+        <div class="col-12 text-primary">
+          Notes
+        </div>
+        <div class="col-12 text-weight-bold q-py-sm">
+          <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.username"/>
+        </div>
+      </div>
+
+
+
+      <div class="col-12 q-py-xl"></div>
+
+      <div class="col-12 row content-container shadow-10 q-pa-sm">
         <div class="col-12 row">
-          <div class="col-auto q-pr-sm text-weight-bold">
+          <div class="col-auto q-pr-sm text-weight-light">
             Username: 
           </div>
-          <div class="col-auto text-weight-bold">
+          <div class="col-auto text-weight-light">
             {{ service?.note }}
           </div>
         </div>
@@ -31,17 +79,32 @@
           <!-- <div class="col-auto">
             <q-btn class="" round flat :icon="!showPassword ? 'visibility' : 'visibility_off'"  @click="togglePassword"/>
           </div> -->
-          <div class="col-auto q-px-sm text-weight-bold password bg-grey-3" @click="togglePassword">
-            {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+          <div class="col-12 text-weight-bold  password" @click="togglePassword">
+            <transition
+              appear
+              :duration="250"
+              name="fade"
+              mode="out-in"
+            >
+              <div :key="computedShowPassword">
+                {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+              </div>
+            </transition>
           </div>
         </div>
       </div>
       <div class="col-12 q-py-sm">
-        <q-separator class="" />
+        <!-- <q-separator class="" /> -->
       </div>
-      <div class="col-12 row">
-        <algorithm-selector class="col-12" />
+      <div class="col-12 row content-container shadow-10">
+        <algorithm-selector class="col-12 shadow" />
         <!-- <q-input filled label="Notes" :model-value="service?.note"/> -->
+      </div>
+      <div class="col-12 q-py-sm">
+        <!-- <q-separator class="" /> -->
+      </div>
+      <div class="col-12 row content-container shadow-10">
+        <q-input class="fit" autogrow borderless filled label="Notes" type="textarea" :model-value="service?.note?.other"/>
       </div>
     </div>
   </q-page>
@@ -65,37 +128,56 @@
   width: 66%;
 }
 .content {
-  height: fit-content;
+  max-height: calc(100vh - 20vw);
+  overflow: scroll;
+  // height: fit-content;
   border-radius: 1em 1em 0 0;
 }
 .password {
   letter-spacing: 3px;
 }
+.content-container {
+  width: 100%;
+  margin: auto;
+  border-radius: 1em;
+  padding: 1em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background-color: white;
+}
+.content-focus {
+  font-size: 1.25rem;
+}
+.square {
+  aspect-ratio: 1;
+}
+
+.fade-enter-active {
+  animation: fade 0.2s ease-in-out;
+}
+.fade-leave-active {
+  animation: fade 0.2s ease-in-out reverse;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, onActivated } from 'vue';
 import { FastAverageColor } from 'fast-average-color'
 import { QImg } from 'quasar';
 
 import { useServiceStore } from 'stores/service'
 
 import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
-// import AlgorithmSelector from 'src/components/Inputs/AlgorithmSelector.vue'
 
-interface Service {
-  name: string; 
-  note?: string;
-  legacy: boolean;
-  encoding: string;   
-  logo: string;
-  domain: string;
-  dateUsed?: number;
-  dateAdded?: number;
-  timesUsed?: number;
-}
-
+const router = useRouter()
 const route = useRoute()
 const serviceStore = useServiceStore()
 
@@ -112,7 +194,7 @@ const handleScroll = (value: TouchEvent) => {
 
   const clampValue = (value: number) => {
     const minValue = getWindowWidth() / 5;
-    const maxValue = getWindowWidth()
+    const maxValue = getWindowWidth() - (getWindowWidth() / 5)
     if (value < minValue) return minValue
     if (value > maxValue) return maxValue
     return value
@@ -122,9 +204,6 @@ const handleScroll = (value: TouchEvent) => {
   lastFiveScrolls.value.shift()
   lastFiveScrolls.value.push(scroll)
   const currentValue = contentOffset.value
-
-  const minValue = getWindowWidth() / 5;
-  const maxValue = getWindowWidth()
 
   let newValue = clampValue(currentValue + scroll)
 
@@ -172,7 +251,8 @@ const computeDefaultOffset = () => {
   contentOffset.value = window.innerWidth/ 2
 }
 
-onMounted(() => {
+onActivated(() => {
+  console.log('activated')
   computeDefaultOffset()
   window.addEventListener('resize', computeDefaultOffset)
 
@@ -203,6 +283,9 @@ const showPassword = ref(false)
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
+const computedShowPassword = computed(() => {
+  return showPassword.value ? 'true' : 'false'
+}) 
 
 
 interface TouchEvent {

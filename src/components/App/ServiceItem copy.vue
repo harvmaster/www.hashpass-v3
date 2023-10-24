@@ -189,17 +189,6 @@ import axios from 'axios'
 // import DynamicLetterLogo from './dynamic-letter-logo.vue';
 import ServiceIcon from './ServiceIconWrapper.vue'
 
-  interface Service {
-    name: string; 
-    note?: string;
-    legacy: boolean;
-    encoding: string;   
-    logo: string;
-    domain: string;
-    dateUsed?: number;
-    dateAdded?: number;
-    timesUsed?: number;
-  }
   export interface ServiceItemProps {
     service: Service
   }
@@ -303,12 +292,14 @@ import ServiceIcon from './ServiceIconWrapper.vue'
   })
 
   const serviceUsername = computed(() => {
-    return props.service.note?.split('username: ')[1]?.split('\n')[0]
+    // return props.service.note?.split('username: ')[1]?.split('\n')[0]
+    return props.service.note?.username
   })
   const serviceNotes = computed(() => {
-    const preUsername = props.service.note?.split('username: ')[0] || ''
-    const postUsername = props.service.note?.split('username: ')[1]?.split('\n')[1] || ''
-    return `${preUsername}${postUsername}`
+    // const preUsername = props.service.note?.split('username: ')[0] || ''
+    // const postUsername = props.service.note?.split('username: ')[1]?.split('\n')[1] || ''
+    // return `${preUsername}${postUsername}`
+    return props.service.note?.other
   })
   
   // const cancelContextMenu = (event) => {

@@ -18,9 +18,10 @@
     <q-page-container>
         <router-view v-slot="{Component, route}">
           <transition :enter-active-class="route.meta.enterTransition" :leave-active-class="route.meta.exitTransition" mode="out-in">
-            <keep-alive>
+            <keep-alive v-if="route.meta.keepAlive !== false">
               <component :is="Component" />
             </keep-alive>
+            <component v-else :is="Component" />
           </transition>
         </router-view>
     </q-page-container>

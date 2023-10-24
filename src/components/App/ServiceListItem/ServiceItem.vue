@@ -43,21 +43,9 @@ import { ref } from 'vue'
 import ServiceIcon from './ServiceIconWrapper.vue'
 import ServiceItemPopout from './ServiceItemPopout.vue'
 
-interface Service {
-  name: string; 
-  note?: string;
-  legacy: boolean;
-  encoding: string;   
-  logo: string;
-  domain: string;
-  dateUsed?: number;
-  dateAdded?: number;
-  timesUsed?: number;
-}
 export interface ServiceItemProps {
   service: Service
 }
-
 
 const props = withDefaults(defineProps<ServiceItemProps>(), {
   service: () => ({

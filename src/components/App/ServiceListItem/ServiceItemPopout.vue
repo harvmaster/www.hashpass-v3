@@ -77,18 +77,6 @@ import { computed, ref } from 'vue'
 import ServiceIcon from 'components/App/ServiceListItem/ServiceIconWrapper.vue'
 import HoverModal from 'components/Models/HoverModel.vue'
 
-interface Service {
-  name: string; 
-  note?: string;
-  legacy: boolean;
-  encoding: string;   
-  logo: string;
-  domain: string;
-  dateUsed?: number;
-  dateAdded?: number;
-  timesUsed?: number;
-}
-
 interface ServiceItemProps {
   service: Service;
 }
@@ -136,13 +124,15 @@ const toggleVisibility = () => {
 }
 
 const serviceUsername = computed(() => {
-  return props.service.note?.split('username: ')[1]?.split('\n')[0]
+  // return props.service.note?.split('username: ')[1]?.split('\n')[0]
+  return props.service.note?.username
 })
 
 const serviceNotes = computed(() => {
-  const preUsername = props.service.note?.split('username: ')[0] || ''
-  const postUsername = props.service.note?.split('username: ')[1]?.split('\n')[1] || ''
-  return `${preUsername}${postUsername}`
+  // const preUsername = props.service.note?.split('username: ')[0] || ''
+  // const postUsername = props.service.note?.split('username: ')[1]?.split('\n')[1] || ''
+  // return `${preUsername}${postUsername}`
+  return props.service.note?.other
 })
 
 const handleClose = (event: string) => {
