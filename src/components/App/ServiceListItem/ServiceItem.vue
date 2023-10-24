@@ -10,7 +10,7 @@
             {{ service.name }}
           </div>
           <div class="col-12 text-caption">
-            {{ service.note }}
+            {{ service.domain }}
           </div>
         </div>
         <div class="col-auto row items-center">

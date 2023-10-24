@@ -36,7 +36,7 @@
         <div class="col-auto">
           <q-btn class="" round flat :icon="!showPassword ? 'visibility' : 'visibility_off'" size="sm" @click="togglePassword"/>
         </div>
-        <div class="col-auto">
+        <div class="col-auto password text-weight-bold">
           {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
         </div>
       </div>
@@ -69,6 +69,9 @@
 }
 .border-radius-1 {
   border-radius: 0.35em;
+}
+.password {
+  letter-spacing: 2px;
 }
 </style>
 
