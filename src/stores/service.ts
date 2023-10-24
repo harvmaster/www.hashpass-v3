@@ -47,17 +47,6 @@ export const useServiceStore = defineStore('service', {
       const services = Services as Service[]
       this.services = services
 
-      const temp = this.services.map(service => {
-        service.note = {
-          username: 'testUsername',
-          email: 'test@email.com',
-          other: 'lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum voluptates.'
-        }
-        return {...service}
-      })
-
-      console.log(temp)
-
       return;
 
       // Load the services from the local storage
