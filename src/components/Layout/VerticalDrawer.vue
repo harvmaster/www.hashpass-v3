@@ -58,7 +58,6 @@
   min-height: v-bind(drawerHeight);
   height: v-bind(drawerHeight);
   max-height: v-bind(drawerHeight);
-  // padding-bottom: v-bind(footerHeight);
   border-radius: 1em 1em 0 0;
 }
 </style>
@@ -116,7 +115,6 @@ const handlePan = (event: PanEvent) => {
   const scroll = event.delta.y
   event.evt.preventDefault()
   event.evt.stopPropagation()
-  // console.log(scroll)
 
   // Handle Momentum for scroll
   previousDeltas.shift()
@@ -126,30 +124,12 @@ const handlePan = (event: PanEvent) => {
     let velocity = previousDeltas.reduce((a,b) => a + b, 0) / 5
     momentumTimer = setInterval(() => {
       scrollWindow(velocity)
-      // console.log('velocity')
       velocity *= 0.9
       if (Math.abs(velocity) < 1) clearInterval(momentumTimer)
     }, 16)
   } else {
     scrollWindow(scroll)
   }
-
-
-
-  
-  // console.log(newOffset)
-  // console.log(event)
-  // console.log(min, max, offset.value)
-  // console.log('window scroll: ', window.scrollY)
-
-  // if (oldOffset + scroll == clampTransform(oldOffset + scroll) && window.scrollY == 0) {
-  //   // console.log('stopping')
-  //   event.evt.preventDefault()
-  //   event.evt.stopPropagation()
-  //   event.evt.stopImmediatePropagation()
-  //   // window.scroll(0, 0)
-  //   return
-  // }
 
   return
 }
@@ -185,12 +165,6 @@ const drawerHeight = computed(() => {
 
 
 const footerHeight = ref<string>('')
-// const footerHeight = computed(() => {
-//   const footer = document.querySelector('.q-footer')
-//   console.log(footer)
-//   const height = document.querySelector('.q-footer')?.clientHeight || 0
-//   return `${height}px`
-// })
 
 const getFooterHeight = () => {
   const height = document.querySelector('.q-footer')?.clientHeight || 0

@@ -38,8 +38,13 @@
             <div class="col-12 text-primary">
               Password
             </div>
-            <div class="col-12 text-weight-bold q-py-sm  password" @click="togglePassword">
-              {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+            <div class="col-12 row" @click="togglePassword" v-touch-hold="copyPassword">
+              <div class="col-auto password text-weight-bold">
+                {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+                <div class="password-copied text-caption text-weight-regular text-primary" :style="passwordCopyStyle">
+                  Copied
+                </div>
+              </div>
             </div>
           </div>
 
@@ -64,22 +69,6 @@
               <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
             </div>
           </div>
-          <div class="col-12 row content-container">
-            <div class="col-12 text-primary">
-              Notes
-            </div>
-            <div class="col-12 text-weight-bold q-py-sm">
-              <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
-            </div>
-          </div>
-          <div class="col-12 row content-container">
-            <div class="col-12 text-primary">
-              Notes
-            </div>
-            <div class="col-12 text-weight-bold q-py-sm">
-              <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
-            </div>
-          </div>
         </div>
       </template>
       
@@ -89,33 +78,30 @@
 </template>
 
 <style scoped lang="scss">
-// .logo-container {
-//   width: 100vw;
-//   aspect-ratio: 1;
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   z-index: -1;
-// }
-// .logo {
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   width: 66%;
-// }
 .logo {
   width: 100%;
   aspect-ratio: 1;
 }
 .content {
-  // height: fit-content;
   border-radius: 1em 1em 0 0;
-  padding-bottom: v-bind(footerHeight)px;
 }
 .password {
+  position: relative;
   letter-spacing: 3px;
 }
+
+.password-copied {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -150%);
+  border-radius: 1em;
+  background-color: white;
+  padding: 0.25em 2em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: all 0.5s ease-out;
+}
+
 .content-container {
   width: 100%;
   margin: auto;
@@ -207,4 +193,27 @@ const backgroundColor = computed(() => {
 
   return `${logoColor.value}`
 })
+
+let copied = ref(false)
+const passwordCopyStyle = computed(() => {
+  if (!copied.value) {
+    return {
+      opacity: 0,
+      transform: 'translate(-50%, -100%)'
+    }
+  }
+  return {
+    opacity: 1,
+    transform: 'translate(-50%, -150%)'
+  }
+})
+
+const copyPassword = () => {
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 2000)
+
+  console.log('copied')
+}
 </script>
