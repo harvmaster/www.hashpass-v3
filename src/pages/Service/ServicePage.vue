@@ -2,7 +2,8 @@
   <q-page class="row">
     <div class="logo-container" :style="logoColorClass">
       <div class="fit" style="position: relative;" :style="logoTransform">
-        <q-img :src="service?.logo" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/>
+        <service-icon-wrapper class="logo" :logo="service?.logo" :name="service?.name" @load="getAverageColor"/>
+        <!-- <q-img :src="service?.logo" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/> -->
         <!-- <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" @load="getAverageColor" ref="logoElement" crossorigin="anonymous"/> -->
       </div>
     </div>
@@ -25,7 +26,7 @@
           Username
         </div>
         <div class="col-12 content-focus q-py-sm">
-          {{ service?.note }}
+          {{ service?.note?.username }}
         </div>
       </div>
 
@@ -176,6 +177,7 @@ import { QImg } from 'quasar';
 import { useServiceStore } from 'stores/service'
 
 import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
+import ServiceIconWrapper from 'components/App/ServiceListItem/ServiceIconWrapper.vue'
 
 const router = useRouter()
 const route = useRoute()
