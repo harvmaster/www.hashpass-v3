@@ -58,7 +58,7 @@
   min-height: v-bind(drawerHeight);
   height: v-bind(drawerHeight);
   max-height: v-bind(drawerHeight);
-  padding-bottom: v-bind(footerHeight);
+  // padding-bottom: v-bind(footerHeight);
   border-radius: 1em 1em 0 0;
 }
 </style>
@@ -93,13 +93,16 @@ const clampTransform = (value: number) => {
 
 const scrollWindow = (pixels: number) => {
   let newOffset = pixels + offset.value
-  // console.log(newOffset, clampTransform(newOffset), window.scrollY == 0)
-  if (newOffset == clampTransform(newOffset) && drawerContent.value?.getScrollPosition().top == 0) {
-    offset.value = newOffset
-  } else {
-    const scrollAmount = drawerContent.value?.getScrollPosition().top || 0
-    drawerContent.value?.setScrollPosition('vertical', scrollAmount + pixels * -1)
+
+  if (drawerContent.value?.getScrollPosition().top == 0) {
+    if (newOffset == clampTransform(newOffset) || offset.value != clampTransform(newOffset)) {
+      offset.value = clampTransform(newOffset)
+      return
+    }
   }
+
+  const scrollAmount = drawerContent.value?.getScrollPosition().top || 0
+  drawerContent.value?.setScrollPosition('vertical', Math.round(scrollAmount + pixels * -1))
 }
 
 let momentumTimer: NodeJS.Timeout;

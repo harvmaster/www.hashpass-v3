@@ -64,6 +64,22 @@
               <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
             </div>
           </div>
+          <div class="col-12 row content-container">
+            <div class="col-12 text-primary">
+              Notes
+            </div>
+            <div class="col-12 text-weight-bold q-py-sm">
+              <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
+            </div>
+          </div>
+          <div class="col-12 row content-container">
+            <div class="col-12 text-primary">
+              Notes
+            </div>
+            <div class="col-12 text-weight-bold q-py-sm">
+              <q-input class="fit" autogrow filled type="textarea" :model-value="service?.note?.other"/>
+            </div>
+          </div>
         </div>
       </template>
       
