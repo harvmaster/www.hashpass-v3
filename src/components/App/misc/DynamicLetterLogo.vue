@@ -17,7 +17,7 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, defineExpose } from 'vue'
 import { getHash } from 'src/crypto/sha256';
 import { hexToBase58 } from 'src/crypto/base58';
 
@@ -27,12 +27,15 @@ interface ServiceIconProps {
   colors?: string[];
 }
 
+
+
 const props = withDefaults(defineProps<ServiceIconProps>(), {
   name: '',
 });
 
 const colors = computed(() => {
   const seed = hexToBase58(getHash(props.name));
+  console.log(props.name, seed)
   return generatePastelColor(seed);
 });
 
@@ -75,5 +78,9 @@ const iconStyle = computed(() => {
   return {
     background: `linear-gradient(45deg, ${colors.value[0]}, ${colors.value[1]})`,
   }
+})
+
+defineExpose({
+  backgroundColor: iconStyle.value.background
 })
 </script>

@@ -2,7 +2,7 @@
   <div class="container" v-touch-pan.mouse.capture="handlePan">
     
     <!-- Logo -->
-    <div class="background-container">
+    <div class="background-container" :style="`background: ${logoBackground};`">
       <div class="logo-container" :style="logoStyle">
         <div class="logo" >
           <slot name="logo">
@@ -14,8 +14,8 @@
     </div>
 
     <!-- Drawer / Content -->
-    <div class="drawer shadow-up-1" :style="drawerStyle">
-      <q-scroll-area :style="`height: ${drawerHeight}`" ref="drawerContent" bar-style="display: none; opacity: 0;" thumb-style="">
+    <div class="drawer shadow-up-1" :style="drawerStyle" :class="drawerBackgroundClass">
+      <q-scroll-area :style="`height: ${drawerHeight}`" ref="drawerContent" bar-style="display: none; opacity: 0;">
         <slot name="content">
   
         </slot>
@@ -66,7 +66,17 @@
 <script setup lang="ts">
 import { QScrollArea } from 'quasar'
 import { forEachTrailingCommentRange } from 'typescript'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineProps } from 'vue'
+
+interface props {
+  logoBackground?: string;
+  drawerBackgroundClass?: string
+}
+
+const props = withDefaults(defineProps<props>(), {
+  logoBackground: 'white',
+  drawerBackgroundClass: 'bg-white'
+})
 
 const drawerContent = ref<InstanceType<typeof QScrollArea> | null>(null)
 
@@ -83,7 +93,7 @@ const clampTransform = (value: number) => {
 
 const scrollWindow = (pixels: number) => {
   let newOffset = pixels + offset.value
-  console.log(newOffset, clampTransform(newOffset), window.scrollY == 0)
+  // console.log(newOffset, clampTransform(newOffset), window.scrollY == 0)
   if (newOffset == clampTransform(newOffset) && drawerContent.value?.getScrollPosition().top == 0) {
     offset.value = newOffset
   } else {
@@ -103,7 +113,7 @@ const handlePan = (event: PanEvent) => {
   const scroll = event.delta.y
   event.evt.preventDefault()
   event.evt.stopPropagation()
-  console.log(scroll)
+  // console.log(scroll)
 
   // Handle Momentum for scroll
   previousDeltas.shift()
@@ -113,7 +123,7 @@ const handlePan = (event: PanEvent) => {
     let velocity = previousDeltas.reduce((a,b) => a + b, 0) / 5
     momentumTimer = setInterval(() => {
       scrollWindow(velocity)
-      console.log('velocity')
+      // console.log('velocity')
       velocity *= 0.9
       if (Math.abs(velocity) < 1) clearInterval(momentumTimer)
     }, 16)
