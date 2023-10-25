@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div class="row" v-touch-hold.prevent.stop:250="toggleVisibility">
+    <div class="row" v-touch-hold.prevent.stop:250="toggleVisibility" @contextmenu="onContextMenu">
       <div class="col-auto row items-center">
         <service-icon class="service-logo square" :logo="logo" :name="service.name"/>
       </div>
@@ -87,6 +87,11 @@ const toggleVisibility = (e: Event) => {
   servicePopout.value.toggleVisibility()
   e.evt.preventDefault()
   e.evt.stopPropagation()
+}
+
+const onContextMenu = (e: Event) => {
+  e.preventDefault()
+  e.stopPropagation()
 }
 
 const stopBubble = (e: Event) => {

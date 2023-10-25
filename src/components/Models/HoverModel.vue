@@ -16,7 +16,7 @@
       appear
       name="fade"
     >
-      <slot name="background">
+      <slot name="background" @contextmenu.capture="onContextMenu">
         <div v-if="isVisible" class=" modal-background" @click="toggleVisibility" v-touch-pan="handlePan" />
       </slot>
     </transition>
@@ -162,6 +162,10 @@ const getModalOffset = () => {
   // return hoverOffset.value
 }
 
+const onContextMenu = (e: Event) => {
+  e.preventDefault()
+  e.stopPropagation()
+}
 
 
 export interface TouchEvent {
