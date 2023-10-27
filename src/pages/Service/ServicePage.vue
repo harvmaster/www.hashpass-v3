@@ -4,7 +4,8 @@
 
       <template v-slot:logo>
         <q-img v-if="service?.logo" :src="service?.logo" class="logo" ref="logoElement" crossorigin="anonymous" @load="getAverageColor"/>
-        <dynamic-letter-logo v-else-if="service?.name" :name="service?.name" class="logo" ref="dyanmicLogoElement"/>
+        <h3 v-else-if="service?.name" class="text-center text-h3 text-weight-light" >{{ service.name[0] }}</h3>
+        <!-- <dynamic-letter-logo v-else-if="service?.name" :name="service?.name" class="logo" ref="dyanmicLogoElement"/> -->
         <!-- <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" ref="logoElement" crossorigin="anonymous"/> -->
       </template>
       
@@ -144,8 +145,7 @@ import { useServiceStore } from 'stores/service'
 
 import VerticalDrawer from 'components/Layout/VerticalDrawer.vue'
 import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
-// import DynamicLetterLogo from '../../components/App/misc/DynamicLetterLogo/DynamicLetterLogo.vue'
-import { DynamicLetterLogo } from '../../components/App/misc/DynamicLetterLogo'
+import { generateColors, generateSeed } from '../../components/App/misc/DynamicLetterLogo'
 
 
 const router = useRouter()
@@ -164,7 +164,6 @@ onMounted(() => {
   console.log(service.value)
 }) 
 
-const dyanmicLogoElement = ref<InstanceType<typeof DynamicLetterLogo> | null>(null)
 const logoColor = ref('#000000')
 const logoElement = ref<InstanceType<typeof QImg> | null>(null)
 const getAverageColor = () => {
@@ -188,9 +187,16 @@ const computedShowPassword = computed(() => {
 
 const backgroundColor = computed(() => {
   if (!logoElement.value) {
-    if (!dyanmicLogoElement.value) return 'white'
-    const background = dyanmicLogoElement.value.backgroundColor
-    return `${background}`
+
+    const seed = generateSeed(service.value?.name || '');
+    const colors = generateColors(seed);
+
+    return `linear-gradient(45deg, ${colors[0]}, ${colors[1]})`
+
+
+    // if (!dyanmicLogoElement.value) return 'white'
+    // const background = dyanmicLogoElement.value.backgroundColor
+    // return `${background}`
   }
 
   return `${logoColor.value}`
