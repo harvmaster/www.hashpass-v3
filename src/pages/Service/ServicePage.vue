@@ -144,7 +144,7 @@ import { useServiceStore } from 'stores/service'
 
 import VerticalDrawer from 'components/Layout/VerticalDrawer.vue'
 import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
-import DynamicLetterLogo from '../../components/App/misc/DynamicLetterLogo.vue'
+import DynamicLetterLogo from '../../components/App/misc/DynamicLetterLogo/DynamicLetterLogo.vue'
 
 const router = useRouter()
 const route = useRoute()
