@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue'
-import DynamicLetterLogo from 'components/App/misc/DynamicLetterLogo.vue'
+import { DynamicLetterLogo } from 'components/App/misc/DynamicLetterLogo'
 
 interface ServiceIconWrapperProps {
   name?: string;
