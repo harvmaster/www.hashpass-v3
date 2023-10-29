@@ -5,8 +5,6 @@
       <template v-slot:logo>
         <q-img v-if="service?.logo" :src="service?.logo" class="logo" ref="logoElement" crossorigin="anonymous" @load="getAverageColor"/>
         <h3 v-else-if="service?.name" class="text-center text-h3 text-weight-light" >{{ service.name[0] }}</h3>
-        <!-- <dynamic-letter-logo v-else-if="service?.name" :name="service?.name" class="logo" ref="dyanmicLogoElement"/> -->
-        <!-- <q-img src="https://www.usatoday.com/gcdn/presto/2019/08/16/USAT/bd6538e4-5535-41ce-857b-518451c3a958-Snapchat_Logo_H.png?crop=2499,1406,x1,y56&width=2499&height=1406&format=pjpg&auto=webp" class="logo" ref="logoElement" crossorigin="anonymous"/> -->
       </template>
       
       <template v-slot:content>

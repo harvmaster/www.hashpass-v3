@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      { path: '/scan', component: () => import('pages/Scanner/ScannerPage.vue'), meta: { routePosition: 0} },
       { path: '/', component: () => import('pages/IndexPage.vue'), meta: { routePosition: 1} },
       { path: '/settings', component: () => import('pages/SettingsPage.vue'), meta: { routePosition: 2} },
       { path: '/settings/pin', component: () => import('pages/Settings/PinChangePage.vue'), meta: { routePosition: 3} },
