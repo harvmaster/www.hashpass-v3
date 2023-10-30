@@ -4,9 +4,9 @@
       <div class="switch-camera-button">
         <q-btn @click="switchCamera" icon="camera_front" color="white" flat/>
       </div>
-      <div class="scanner-display">
+      <!-- <div class="scanner-display">
         <q-img src="/public/scanner.svg" />
-      </div>
+      </div> -->
       <video class="viewfinder" ref="viewfinder" autoplay>
 
       </video>
@@ -32,7 +32,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  z-index: -1;
+  transform: translate(-50%,-50%) !important;
 }
 .scanner-display {
   position: absolute;
@@ -53,11 +54,33 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import QrScanner from 'qr-scanner'
 
 const scanner = ref<MediaStream | null>(null)
 
 const viewfinder = ref<HTMLVideoElement | null>(null)
 const selectedInputDevice = ref<MediaDeviceInfo | null>(null)
+
+let qrScanner: QrScanner
+
+const getScanner = () => {
+  if (!qrScanner) {
+    console.log('createScanner')
+    if (!viewfinder.value) return
+
+    console.log('creating')
+    qrScanner = new QrScanner(
+      viewfinder.value,
+      result => console.log(result),
+      {
+        highlightScanRegion: true
+      }
+    )
+    qrScanner.start()
+  }
+
+  return qrScanner
+}
 
 const switchCamera = async () => {
   const devices = await getDevices()
@@ -70,25 +93,33 @@ const switchCamera = async () => {
     selectedInputDevice.value = devices[0]
   }
 
-  const selected = devices.findIndex(device => device.deviceId === selectedInputDevice.value.deviceId)
+  const selected = devices.findIndex(device => device.deviceId === selectedInputDevice.value?.deviceId)
   const nextDevice = devices[selected + 1] || devices[0]
   selectedInputDevice.value = nextDevice
 
 
   console.log(selected, nextDevice)
 
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: nextDevice.deviceId
-    }
-  })
-  scanner.value = stream
-
-  if (viewfinder.value) {
-    console.log(viewfinder.value)
-    viewfinder.value.srcObject = stream
-    viewfinder.value.play()
+  if (!viewfinder.value) {
+    return
   }
+
+  const scanner = getScanner()
+  console.log(scanner)
+  scanner?.setCamera(selectedInputDevice.value.deviceId)
+
+  // const stream = await navigator.mediaDevices.getUserMedia({
+  //   video: {
+  //     deviceId: nextDevice.deviceId
+  //   }
+  // })
+  // scanner.value = stream
+
+  // if (viewfinder.value) {
+  //   console.log(viewfinder.value)
+  //   viewfinder.value.srcObject = stream
+  //   viewfinder.value.play()
+  // }
 
   return
 }
