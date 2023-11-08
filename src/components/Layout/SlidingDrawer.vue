@@ -1,25 +1,30 @@
 <template>
   <!-- <div class="container" v-touch-pan.vertical="handleSwipe"> -->
-  <div class="container">
-    <div class="drawer" :class="drawerClasses">
-      <slot name="drawer" class="drawer">
-  
-      </slot>
-    </div>
-    
-    <transition
+    <!-- <transition
       name="fade"
-    >
-      <div v-if="visible" class="background" @click="toggleVisibility">
-  
-      </div>
-    </transition>
-  </div>
+    > -->
+      <div class="container">
+        <div class="drawer" :class="drawerClasses">
+          <slot name="drawer" class="">
+            
+          </slot>
+        </div>
+        
+        <transition
+          name="fade"
+        >
+        <div v-if="visible" class="background" @click="toggleVisibility">
+    
+        </div>
+      </transition>
+    </div>
+  <!-- </transition> -->
 </template>
 
 <style scoped lang="scss">
 .container {
-  position: relative;
+  // position: relative;
+  pointer-events: none;
 }
 .drawer {
   position: absolute;
@@ -34,6 +39,7 @@
   box-shadow: 0 0 1em rgba(0,0,0,0.5);
   transition: all 0.2s linear;
   transform: translateY(100%);
+  pointer-events: all;
 }
 .background {
   position: fixed;
@@ -41,8 +47,9 @@
   left: 0;
   width: 100vw;
   height: 100%;
-  z-index: -2;
+  z-index: 2;
   background-color: rgba(0,0,0,0.5);
+  pointer-events: all;
 }
 .opened {
   transform: translateY(0%) !important;
@@ -66,8 +73,9 @@ const props = withDefaults(defineProps<Props>(), {
   drawerHeight: '75%',
 })
 
-const visible = ref(false)
+const visible = ref(true)
 const toggleVisibility = () => {
+  console.log('toggle')
   visible.value = !visible.value
 }
 

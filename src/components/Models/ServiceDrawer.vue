@@ -2,11 +2,11 @@
   <sliding-drawer class="service-drawer" ref="drawer">
     <template v-slot:drawer>
       <div class="row q-pa-md">
-        <div class="col-3 q-pa-sm row relative" v-for="service of services" :key="service.name" v-ripple.center>
+        <div class="col-3 q-pa-sm row relative" v-for="service of services" :key="service.name" v-ripple>
           <div class="col-12 square q-pa-sm row">
             <service-icon-wrapper :logo="service.logo" :name="service.name" class="col-12 service-icon"/>
           </div>
-          <div class="col-12 text-center">
+          <div class="col-12 text-center ellipsis">
             {{ service.name }}
           </div>
         </div>
@@ -23,7 +23,7 @@
   width: 100%;
   height: 100%;
   z-index: 2;
-  pointer-events: none;
+  // pointer-events: none;
 }
 .square {
   aspect-ratio: 1;

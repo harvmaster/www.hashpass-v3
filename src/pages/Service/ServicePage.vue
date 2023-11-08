@@ -10,7 +10,7 @@
       <template v-slot:content>
         <div class="col-12 row bg-grey-1 content q-pa-md">
           <div class="col-12 row">
-            <div class="bg-white">
+            <div class="">
               <div class="col-12 text-h5 text-weight-bold no-margin">
                 {{ service?.name }}
               </div>

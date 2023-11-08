@@ -8,18 +8,21 @@
         <q-img src="/public/scanner.svg" class="scanner-border" />
       </div>
       <video class="viewfinder" ref="viewfinder" autoplay>
-
+        
       </video>
     </div>
+    
+    
+    <!-- <div class="errors">
+      <div class="error" v-for="error of errors" :key="error">
+        {{ error }}
+      </div>
+    </div> -->
     
     <!-- Drawer -->
     <service-drawer ref="drawer" :services="services"/>
 
-    <div class="errors">
-      <div class="error" v-for="error of errors" :key="error">
-        {{ error }}
-      </div>
-    </div>
+
 
     <!-- <sliding-drawer class="service-drawer" ref="drawer">
       <template v-slot:drawer>
@@ -97,12 +100,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, onActivated } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
+import { useQuasar } from 'quasar'
 import QrScanner from 'qr-scanner'
 
+const $q = useQuasar()
+
 import { useServiceStore } from 'src/stores/service'
-// import { DynamicLetterLogo } from 'src/components/App/misc/DynamicLetterLogo'
-// import ServiceIconWrapper from 'src/components/App/ServiceListItem/ServiceIconWrapper.vue'
-// import SlidingDrawer from 'src/components/Layout/SlidingDrawer.vue'
 import ServiceDrawer from 'src/components/Models/ServiceDrawer.vue'
 
 const scanner = ref<MediaStream | null>(null)
@@ -121,18 +124,24 @@ const errors = ref([])
 const getScanner = async () => {
   if (!qrScanner) {
     console.log('createScanner')
+    debug('createScanner')
     if (!viewfinder.value) return
 
     console.log('creating')
+    debug('creating')
     qrScanner = new QrScanner(
       viewfinder.value,
       result => handleScan(result),
       {
+        maxScansPerSecond: 5,
         returnDetailedScanResult: true
       }
     )
+    debug(qrScanner)
     await qrScanner.start().catch((err) => {
-      errors.value.push(err)
+      debug(err)
+      // get stacktrace of err
+      debug(err.stack)
     })
   }
 
@@ -141,11 +150,15 @@ const getScanner = async () => {
 
 const switchCamera = async () => {
   const devices = await getDevices()
+  devices.forEach(device => errors.value.push(device))
 
   if (devices.length === 0) {
     throw new Error('No devices found')
   }
   if (selectedInputDevice.value === null) {
+    // const priority = devices.filter(device => priorityCameras.includes(device.label))
+    // const priorityDevice = priority.findIndex(device => device.label === priorityCameras[0]) || 0
+    // selectedInputDevice.value = devices[priorityDevice]
     selectedInputDevice.value = devices[0]
   }
 
@@ -187,8 +200,9 @@ onActivated(() => {
   getDevices().then(console.log)
   console.log(qrScanner)
 
-  switchCamera().catch(() => {
+  switchCamera().catch((err) => {
     console.log('Failed to get user media')
+    debug(err)
   })
 })
 
@@ -196,18 +210,32 @@ onUnmounted(() => {
   destroyCamera()
 })
 
-onBeforeRouteLeave(() => {
+onBeforeRouteLeave(async (to, from, next) => {
   destroyCamera()
+  next()
 })
 
-const destroyCamera = () => {
-  qrScanner = null
+const destroyCamera = async () => {
   qrScanner?.destroy()
+  qrScanner = null
 }
 
 const footerHeight = computed(() => {
   const height = document.querySelector('.q-footer')?.clientHeight || 0
   return `${height}px`
 })
+
+const priorityCameras = [
+  'Back Camera',
+  'Front Camera',
+  'Back Ultra Wide Camera'
+]
+
+const debug = (msg) => {
+  if ($q.platform.is.mobile) {
+    errors.value.push(msg)
+  }
+  console.log(msg)
+}
 
 </script>

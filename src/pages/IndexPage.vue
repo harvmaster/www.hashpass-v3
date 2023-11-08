@@ -16,6 +16,7 @@
             </q-list>
           </q-menu>
         </q-btn>
+        <q-btn icon="lock" flat @click="test"/>
       </div>
       <transition-group
         name="flip-list"
@@ -40,8 +41,17 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import ServiceItem from 'src/components/App/ServiceListItem/ServiceItem.vue';
-import { services as testServices } from 'src/data/services'
 import { useServiceStore } from 'stores/service'
+
+import hp3 from 'src/crypto/passwordGenerators/hp3';
+
+const test = () => {
+  console.time('hashing')
+  const password = serviceStore.services.slice(0, 10).map(service => {
+    return hp3('secret', service.name)
+  })
+  console.timeEnd('hashing')
+}
 
 const router = useRouter()
 

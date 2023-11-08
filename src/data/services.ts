@@ -244,6 +244,117 @@ const services = [
         "dateAdded": 1620000000000,
         "dateUsed": 1620000000000,
         "timesUsed": 1
-    }
+    },
+    {
+        "name": "GoDaddy",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "godaddy.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "Apple",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "apple.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "Spotify",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "Spotify.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "Steam",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "steamapp.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "Teamsepeak",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "teamspeak.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "Binance",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "binance.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "CoinMarketCap",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "coinmarketcap.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "CoinGecko",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "coingecko.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+    {
+        "name": "CoinMarketCal",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "coinmarketcal.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+
+    {
+        "name": "CoinTelegraph",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "cointelegraph.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 1
+    },
+
+    {
+        "name": "CoinDesk",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "coindesk.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 2
+    },
+
+    {
+        "name": "CoinbasePro",
+        "legacy": false,
+        "encoding": "base58",
+        "domain": "pro.coinbase.com",
+        "dateAdded": 1620000000000,
+        "dateUsed": 1650000000000,
+        "timesUsed": 2
+    },
 ]
 export default services
