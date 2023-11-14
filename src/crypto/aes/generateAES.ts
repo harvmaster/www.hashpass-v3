@@ -7,14 +7,22 @@ export const generateAES = async (seed: string): Promise<aesKey> => {
   const iterations = 10000
   const keylen = 32
   const digest = 'sha-512'
-  const key = await window.crypto.subtle.importKey(
+
+  let caller
+  try {
+    caller = window
+  } catch (err) {
+    caller = self
+  }
+
+  const key = await caller.crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(password),
     { name: 'PBKDF2' },
     false,
     ['deriveBits', 'deriveKey']
   )
-  const aes = await window.crypto.subtle.deriveKey(
+  const aes = await caller.crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
       salt: new TextEncoder().encode(salt),

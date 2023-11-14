@@ -1,1 +1,1 @@
-export default [ 'hp1', 'hp2', 'hp3' ]
+export default [ 'legacy', 'hex', 'base58' ]

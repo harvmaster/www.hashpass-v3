@@ -2,7 +2,8 @@ import { generateAES } from '.'
 
 export const decrypt = async (data: string, key: string) => {
   const aes = await generateAES(key)
-  const decrypted = await aes.decrypt(new Uint8Array(Buffer.from(data, 'base64')))
+  const encodedData = Uint8Array.from(atob(data), c => c.charCodeAt(0))
+  const decrypted = await aes.decrypt(encodedData)
   return decrypted
 }
 

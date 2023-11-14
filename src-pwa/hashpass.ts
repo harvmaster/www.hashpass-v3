@@ -6,11 +6,12 @@ interface MemoisedPassword {
   password: string;
 }
 
-class HashpassSW {
+class HashpassSW implements HashManager {
   #encryptedSecret?: string
   #secret?: string | null
   #passwords: Map<string, MemoisedPassword>
   #timeout?: NodeJS.Timeout
+  #counter = 0
 
   constructor() {
     this.#passwords = new Map<string, MemoisedPassword>()
@@ -29,6 +30,7 @@ class HashpassSW {
     try {
       this.#secret = await decrypt(this.#encryptedSecret, pin)
     } catch (err) {
+      console.log(err)
       throw new Error('invalid pin')
     }
   }
@@ -55,12 +57,12 @@ class HashpassSW {
     return this.#secret === null
   }
 
-  async generatePassword(service: string, algorithm: string){
+  generatePassword(service: string, algorithm: string): string {
     if (!this.#secret) throw new Error('secret is undefined')
-    if (this.#passwords.has(service)) return this.#passwords.get(service)?.password
+    if (this.#passwords.has(service)) return this.#passwords.get(service)!.password
 
     const hash = this.getAlgorithm(algorithm)
-    const password = await hash(this.#secret, service)
+    const password = hash(this.#secret, service)
     
     const memo = {
       algorithm,
@@ -68,17 +70,20 @@ class HashpassSW {
     }
     this.#passwords.set(service, memo)
 
+    this.#counter++
+    if (this.#counter % 10 == 0) console.log(this.#counter)
+
     return password
   }
 
   getAlgorithm (algorithm: string) {
     if (!algorithms.includes(algorithm)) throw new Error('invalid algorithm')
     const algorithmTable: {[key: string]: (secret: string, service: string) => string} = {
-      'hp1': hp1,
-      'hp2': hp2,
-      'hp3': hp3
+      'legacy': hp1,
+      'hex': hp2,
+      'base58': hp3
     }
-    return algorithmTable[algorithm]
+    return algorithmTable[algorithm] || hp3
   }
 
 

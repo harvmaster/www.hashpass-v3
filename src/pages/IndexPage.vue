@@ -44,13 +44,53 @@ import ServiceItem from 'src/components/App/ServiceListItem/ServiceItem.vue';
 import { useServiceStore } from 'stores/service'
 
 import hp3 from 'src/crypto/passwordGenerators/hp3';
+import messageHandler from 'src/ServiceWorker/MessgeHandler';
+import { createBase58Password } from 'src/ServiceWorker/PasswordGenerators'
+import { setSecret, unlockSecret } from 'src/ServiceWorker/User'
+import { encrypt, decrypt } from 'src/crypto/aes';
 
-const test = () => {
-  console.time('hashing')
-  const password = serviceStore.services.slice(0, 10).map(service => {
-    return hp3('secret', service.name)
+const test = async () => {
+  // console.time('hashing')
+  // const password = serviceStore.services.slice(0, 10).map(service => {
+  //   return hp3('secret', service.name)
+  // })
+  // console.timeEnd('hashing')
+  // messageHandler.createMessage('test', 'test')
+  
+  const secret = await encrypt('test', 'test')
+  await setSecret(secret)
+  await unlockSecret('test')
+
+  const generateRandomString = () => {
+    const length = 12
+    let result = ''
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const charactersLength = characters.length
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    }
+    return result
+  }
+
+  const bigtest = new Array(10).fill(0).map(() => {
+    return generateRandomString()
   })
+  console.time('hashing')
+  const password = bigtest.map(service => {
+    return createBase58Password(service)
+  })
+  
+  await Promise.all(password)
   console.timeEnd('hashing')
+
+  console.time('local')
+  const local = bigtest.map(service => {
+    return hp3('test', service)
+  })
+  console.timeEnd('local')
+
+
+  // createBase58Password('test')
 }
 
 const router = useRouter()
