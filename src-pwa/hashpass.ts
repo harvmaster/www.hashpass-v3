@@ -18,50 +18,72 @@ class HashpassSW implements HashManager {
   }
 
   // Takes in an encrypted string that is the secret
-  setSecret(secret: string) {
+  setSecret(secret: string): SuccessOrErrorMessage {
     this.#encryptedSecret = secret
     this.#passwords = new Map<string, MemoisedPassword>()
-  }
-
-  // unencrypts the secret with the pin using aes
-  async unlockSecret(pin: string) {
-    if (!this.#encryptedSecret) throw new Error('secret is undefined')
-    
-    try {
-      this.#secret = await decrypt(this.#encryptedSecret, pin)
-    } catch (err) {
-      console.log(err)
-      throw new Error('invalid pin')
+    return {
+      type: 'success'
     }
   }
 
-  lock() {
-    this.#secret = null
-    this.#passwords = new Map<string, MemoisedPassword>()
+  // unencrypts the secret with the pin using aes
+  async unlockSecret(pin: string): Promise<SuccessOrErrorMessage> {
+    if (!this.#encryptedSecret) return this.createError('secret is undefined')
+    
+    try {
+      this.#secret = await decrypt(this.#encryptedSecret, pin)
+      return {
+        type: 'success'
+      }
+    } catch (err) {
+      console.log(err)
+      return this.createError('invalid pin')
+    }
   }
 
-  isValidPin(pin: string) {
+  lock(): SuccessOrErrorMessage{
+    this.#secret = null
+    this.#passwords = new Map<string, MemoisedPassword>()
+    return {
+      type: 'success'
+    }
+  }
+
+  isValidPin(pin: string): DataOrErrorMessage {
     if (!this.#encryptedSecret) {
-      throw new Error('secret in undefined')
+      return this.createError('secret in undefined')
     }
 
     try {
       decrypt(this.#encryptedSecret, pin)
-      return true
+      return {
+        type: 'data',
+        data: true
+      }
     } catch (err) {
-      return false
+      return {
+        type: 'data',
+        data: false
+      }
     }
   }
 
-  isLocked() {
-    return this.#secret === null
+  isLocked(): DataOrErrorMessage {
+    return {
+      type: 'data',
+      data: this.#secret === null
+    }
   }
 
-  generatePassword(service: string, algorithm: string): string {
-    if (!this.#secret) throw new Error('secret is undefined')
-    if (this.#passwords.has(service)) return this.#passwords.get(service)!.password
+  generatePassword(service: string, algorithm: string): DataOrErrorMessage {
+    if (!this.#secret) return this.createError('secret is undefined')
+    if (this.#passwords.has(service)) return { 
+      type: 'data',
+      data: this.#passwords.get(service)!.password
+    }
 
     const hash = this.getAlgorithm(algorithm)
+    if (!hash) return this.createError('invalid algorithm')
     const password = hash(this.#secret, service)
     
     const memo = {
@@ -73,11 +95,14 @@ class HashpassSW implements HashManager {
     this.#counter++
     if (this.#counter % 10 == 0) console.log(this.#counter)
 
-    return password
+    return {
+      type: 'data',
+      data: password
+    }
   }
 
   getAlgorithm (algorithm: string) {
-    if (!algorithms.includes(algorithm)) throw new Error('invalid algorithm')
+    if (!algorithms.includes(algorithm)) return null
     const algorithmTable: {[key: string]: (secret: string, service: string) => string} = {
       'legacy': hp1,
       'hex': hp2,
@@ -87,25 +112,44 @@ class HashpassSW implements HashManager {
   }
 
 
-  startTimeout() {
+  startTimeout(): SuccessOrErrorMessage {
     if (this.#timeout) clearTimeout(this.#timeout);
     this.#timeout = setTimeout(() => {
       this.lock();
     }, 1000 * 60 * 5);
+    return {
+      type: 'success'
+    }
   }
 
-  stopTimeout() {
+  stopTimeout(): SuccessOrErrorMessage {
     if (this.#timeout) clearTimeout(this.#timeout);
+    return {
+      type: 'success'
+    }
   }
 
-  decrypt (data: string) {
-    if (!this.#secret) throw new Error('secret is undefined')
-    return decrypt(data, this.#secret)
+  async decrypt (data: string): Promise<DataOrErrorMessage> {
+    if (!this.#secret) return this.createError('secret is undefined')
+    return {
+      type: 'data',
+      data: await decrypt(data, this.#secret)
+    }
   }
 
-  encrypt (data: string) {
-    if (!this.#secret) throw new Error('secret is undefined')
-    return encrypt(data, this.#secret)
+  async encrypt (data: string): Promise<DataOrErrorMessage>{
+    if (!this.#secret) return this.createError('secret is undefined')
+    return {
+      type: 'data',
+      data: await encrypt(data, this.#secret)
+    }
+  }
+
+  createError (message: any): ErrorMessage {
+    return {
+      type: 'error',
+      error: message
+    }
   }
 }
 

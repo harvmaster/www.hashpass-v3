@@ -83,11 +83,19 @@ const test = async () => {
   await Promise.all(password)
   console.timeEnd('hashing')
 
-  console.time('local')
-  const local = bigtest.map(service => {
-    return hp3('test', service)
+  console.time('memo')
+  const password2 = bigtest.map(service => {
+    return createBase58Password(service)
   })
-  console.timeEnd('local')
+  
+  await Promise.all(password2)
+  console.timeEnd('memo')
+
+  // console.time('local')
+  // const local = bigtest.map(service => {
+  //   return hp3('test', service)
+  // })
+  // console.timeEnd('local')
 
 
   // createBase58Password('test')
