@@ -1,26 +1,37 @@
-export const messageHandler = (manager: HashManager, message: Message) => {
-  // const capabilities = {
-  //   'setSecret': ({ secret }: { secret: string}) => manager.setSecret(secret),
-  //   'unlockSecret': ({ pin }: { pin: string}) => manager.unlockSecret(pin),
-  //   'lock': () => manager.lock(),
-  //   'generatePassword': ({ service, algorithm }: { service: string, algorithm: string}) => manager.generatePassword(service, algorithm),
-  //   'isValidPin': ({ pin }: { pin: string}) => manager.isValidPin(pin),
-  //   'isLocked': () => manager.isLocked()
-  // }
+export const messageHandler = (manager: HashManager, message: Message): ResponseMessage | Promise<ResponseMessage> => {
 
-  switch (message.type) {
-    case 'setSecret':
-      return manager.setSecret(message.params.secret)
-    case 'unlockSecret':
-      return manager.unlockSecret(message.params.pin)
-    case 'lock':
-      return manager.lock()
-    case 'generatePassword':
-      return manager.generatePassword(message.params.service, message.params.algorithm)
-    case 'isValidPin':
-      return manager.isValidPin(message.params.pin)
-    case 'isLocked':
-      return manager.isLocked()
+  const success = (): SuccessMessage => ({
+    type: 'success'
+  })
+  const error = (error: any): ErrorMessage => ({
+    type: 'error',
+    error
+  })
+  const data = (data: any): DataMessage => ({
+    type: 'data',
+    data
+  })
+  
+  try {
+    switch (message.type) {
+      case 'setSecret':
+        manager.setSecret(message.params.secret)
+        return success()
+      case 'unlockSecret':
+        manager.unlockSecret(message.params.pin)
+         return success()
+      case 'lock':
+        manager.lock()
+        return success()
+      case 'generatePassword':
+        return data(manager.generatePassword(message.params.service, message.params.algorithm))
+      case 'isValidPin':
+        return data(manager.isValidPin(message.params.pin))
+      case 'isLocked':
+        return data(manager.isLocked())
+    }
+  } catch (err) {
+    return error(err)
   }
 }
 

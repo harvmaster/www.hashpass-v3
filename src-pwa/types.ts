@@ -1,14 +1,14 @@
 interface HashManager {
-  setSecret(secret: string): SuccessOrErrorMessage;
-  unlockSecret(pin: string): Promise<SuccessOrErrorMessage>;
-  lock(): SuccessOrErrorMessage;
-  isValidPin(pin: string): DataOrErrorMessage;
-  isLocked(): DataOrErrorMessage;
-  generatePassword(service: string, algorithm: string): DataOrErrorMessage;
-  startTimeout(): SuccessOrErrorMessage;
-  stopTimeout(): SuccessOrErrorMessage;
-  decrypt(data: string): Promise<DataOrErrorMessage>;
-  encrypt(data: string): Promise<DataOrErrorMessage>;
+  setSecret(secret: string): void;
+  unlockSecret(pin: string): Promise<void>;
+  lock(): void;
+  isValidPin(pin: string): boolean;
+  isLocked(): boolean;
+  generatePassword(service: string, algorithm: string): string;
+  startTimeout(): void;
+  stopTimeout(): void;
+  decrypt(data: string): Promise<string>;
+  encrypt(data: string): Promise<string>;
 }
 
 interface SetSecretMessage {
