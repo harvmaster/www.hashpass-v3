@@ -95,7 +95,7 @@
         <div class="row justify-center q-pa-md q-col-gutter-y-md">
           <div class="col-12 row">
             <div class="col-12 row">
-              <q-btn class="col-12" flat label="Test Passwords" color="primary" @click="() => testPasswordGenerators()"/>
+              <q-btn class="col-12" flat label="Test Passwords" color="primary" @click="() => testPasswordGeneratorsWithNotification()"/>
             </div>
             <div class="col-12 row">
               <q-btn class="col-12" flat label="set Secret" color="primary" @click="() => testSetSecret()"/>
@@ -135,6 +135,7 @@ import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, 
 
 import ToggleSelect from 'src/components/Inputs/ToggleSelect.vue'
 import { computed, ref } from 'vue'
+import { Notify } from 'quasar'
 
 const algorithmExpanded = ref(false)
 const selectedAlgorithm = ref('v1')
@@ -196,6 +197,21 @@ const toPasswordReset = () => {
 }
 
 const debugOptions = ref(true)
+const testPasswordGeneratorsWithNotification = async () => {
+  const result = await testPasswordGenerators()
+  if (!result) {
+    return Notify.create({
+      message: 'Test Failed',
+      color: 'red',
+      icon: 'close'
+    })
+  }
+  Notify.create({
+    message: `Legacy: ${result.legacy}, Hex: ${result.hex}, Base58: ${result.base58}`,
+    color: result ? 'green' : 'red',
+    icon: result ? 'check' : 'close'
+  })
+}
 
 </script>
   

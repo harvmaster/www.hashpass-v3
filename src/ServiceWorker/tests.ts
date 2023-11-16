@@ -2,6 +2,8 @@ import { createBase58Password, createHexPassword, createLegacyPassword } from '.
 import { setSecret, unlockSecret, isLocked, isValidPin, startTimeout, stopTimeout } from './User'
 import { encrypt, decrypt } from 'src/crypto/aes';
 
+import { Notify } from 'quasar';
+
 const generateRandomString = () => {
   const length = 12
   let result = ''
@@ -18,23 +20,35 @@ export const testPasswordGenerators = async (iterations = 10) => {
   console.log('Testing password generators...')
   
   try {
+    const lStart = performance.now()
     console.log('--------------Legacy--------------')
     console.time('legacy Generator')
     const legacyPasswords = services.map(service => createLegacyPassword(service))
     await Promise.all(legacyPasswords)
     console.timeEnd('legacy Generator')
+    const lEnd = performance.now()
   
+    const hStart = performance.now()
     console.log('--------------Hex--------------')
     console.time('hex Generator')
     const hexPasswords = services.map(service => createHexPassword(service))
     await Promise.all(hexPasswords)
     console.timeEnd('hex Generator')
+    const hEnd = performance.now()
   
+    const bStart = performance.now()
     console.log('--------------Base58--------------')
     console.time('base58 Generator')
     const base58Passwords = services.map(service => createBase58Password(service))
     await Promise.all(base58Passwords)
     console.timeEnd('base58 Generator')
+    const bEnd = performance.now()
+
+    return {
+      legacy: lEnd - lStart,
+      hex: hEnd - hStart,
+      base58: bEnd - bStart
+    }
   } catch (err) {
     console.log(err)
     console.timeEnd('legacy Generator')
