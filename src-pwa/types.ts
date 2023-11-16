@@ -2,7 +2,7 @@ interface HashManager {
   setSecret(secret: string): void;
   unlockSecret(pin: string): Promise<void>;
   lock(): void;
-  isValidPin(pin: string): boolean;
+  isValidPin(pin: string): Promise<boolean>;
   isLocked(): boolean;
   generatePassword(service: string, algorithm: string): string;
   startTimeout(): void;

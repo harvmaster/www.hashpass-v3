@@ -18,8 +18,7 @@ export const messageHandler = (manager: HashManager, message: Message): Response
         manager.setSecret(message.params.secret)
         return success()
       case 'unlockSecret':
-        manager.unlockSecret(message.params.pin)
-         return success()
+        return manager.unlockSecret(message.params.pin).then(success, error)
       case 'lock':
         manager.lock()
         return success()

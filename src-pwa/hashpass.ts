@@ -40,13 +40,13 @@ class HashpassSW implements HashManager {
     this.#passwords = new Map<string, MemoisedPassword>()
   }
 
-  isValidPin(pin: string): boolean {
+  async isValidPin(pin: string): Promise<boolean> {
     if (!this.#encryptedSecret) {
       throw new Error('secret in undefined')
     }
 
     try {
-      decrypt(this.#encryptedSecret, pin)
+      await decrypt(this.#encryptedSecret, pin)
       return true
     } catch (err) {
       return false
