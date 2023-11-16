@@ -48,7 +48,15 @@ interface IsLockedMessage {
   type: 'isLocked'
 }
 
-type Message = SetSecretMessage | UnlockSecretMessage | LockMessage | GeneratePasswordMessage | IsValidPinMessage | IsLockedMessage
+interface StartTimeoutMessage {
+  type: 'startTimeout'
+}
+
+interface StopTimeoutMessage {
+  type: 'stopTimeout'
+}
+
+type Message = SetSecretMessage | UnlockSecretMessage | LockMessage | GeneratePasswordMessage | IsValidPinMessage | IsLockedMessage | StartTimeoutMessage | StopTimeoutMessage
 
 interface ErrorMessage {
   type: 'error'

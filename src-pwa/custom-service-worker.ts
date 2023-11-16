@@ -42,14 +42,14 @@ const hashpass = new Hashpass()
 self.addEventListener('message', async (event) => {
   const {id, type, params} = event.data
    
-  console.log('SW received message', id, type, params)
+  // console.log('SW received message', id, type, params)
 
   const result = await messageHandler(hashpass, event.data)
-  console.log(result)
+  // console.log(result)
 
 
   self.clients.matchAll().then(clients => {
-    clients.forEach(client => client.postMessage({id, result: params}))
+    clients.forEach(client => client.postMessage({id, result: result}))
   })
 })
 

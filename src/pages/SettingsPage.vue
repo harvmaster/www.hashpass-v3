@@ -85,6 +85,42 @@
           </div>  
         </div>
       </q-expansion-item>
+
+      <q-expansion-item
+        v-model="debugOptions"
+        icon="bug_report"
+        label="Tests"
+        caption="Debug and test"
+      >
+        <div class="row justify-center q-pa-md q-col-gutter-y-md">
+          <div class="col-12 row">
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="Test Passwords" color="primary" @click="() => testPasswordGenerators()"/>
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="set Secret" color="primary" @click="() => testSetSecret()"/>
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="unlock secret" color="primary" @click="() => testUnlockSecret()"/>
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="isLocked" color="primary" @click="() => testIsLocked()" />
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="isValidPin True" color="primary" @click="() => testIsValidPin()" />
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="isValidPin False" color="primary" @click="() => testIsInvalidPin()" />
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="start timeout" color="primary" @click="() => testStartTimeout()" />
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="stop timeout" color="primary" @click="() => testStopTimeout()" />
+            </div>
+          </div>  
+        </div>
+      </q-expansion-item>
     </q-list>
   </q-page>
 </template>
@@ -94,6 +130,9 @@
 </style>
   
 <script setup lang="ts">
+import { setSecret, unlockSecret, isLocked } from 'src/ServiceWorker/User'
+import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, testIsValidPin, testIsInvalidPin, testStartTimeout, testStopTimeout } from 'src/ServiceWorker/tests'
+
 import ToggleSelect from 'src/components/Inputs/ToggleSelect.vue'
 import { computed, ref } from 'vue'
 
@@ -155,6 +194,8 @@ const AccountSecurityExpanded = ref(false)
 const toPasswordReset = () => {
   return
 }
+
+const debugOptions = ref(true)
 
 </script>
   

@@ -38,6 +38,8 @@ class HashpassSW implements HashManager {
   lock() {
     this.#secret = null
     this.#passwords = new Map<string, MemoisedPassword>()
+    console.log('locked')
+    // self.postMessage({ type: 'locked' })
   }
 
   async isValidPin(pin: string): Promise<boolean> {
@@ -59,7 +61,12 @@ class HashpassSW implements HashManager {
 
   generatePassword(service: string, algorithm: string): string {
     if (!this.#secret) throw new Error('secret is undefined')
-    if (this.#passwords.has(service)) return this.#passwords.get(service)!.password
+
+    const memoIdentifier = `${service}${algorithm}`
+
+    if (this.#passwords.has(memoIdentifier)) {
+      return this.#passwords.get(memoIdentifier)!.password
+    }
 
     const hash = this.getAlgorithm(algorithm)
     if (!hash) throw new Error('invalid algorithm')
@@ -69,10 +76,10 @@ class HashpassSW implements HashManager {
       algorithm,
       password
     }
-    this.#passwords.set(service, memo)
+    this.#passwords.set(memoIdentifier, memo)
 
     this.#counter++
-    if (this.#counter % 10 == 0) console.log(this.#counter)
+    if (this.#counter % 30 == 0) console.log(...this.#passwords)
 
     return password
   }
@@ -92,7 +99,8 @@ class HashpassSW implements HashManager {
     if (this.#timeout) clearTimeout(this.#timeout);
     this.#timeout = setTimeout(() => {
       this.lock();
-    }, 1000 * 60 * 5);
+    }, 1000 * 60);
+    console.log('timeout started')
   }
 
   stopTimeout() {

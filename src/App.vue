@@ -9,6 +9,10 @@ import { useSecretStore } from './stores/secret';
 import { useTokenStore } from './stores/token';
 import { useServiceStore } from './stores/service';
 
+import startTimeout from 'src/ServiceWorker/User/startTimeout'
+import stopTimeout from 'src/ServiceWorker/User/stopTimeout'
+import isLocked from 'src/ServiceWorker/User/isLocked'
+
 const router = useRouter()
 
 const userStore = useUserStore()
@@ -66,5 +70,22 @@ const loadStores = async () => {
 }
 
 loadStores()
+window.addEventListener('beforeunload', () => {
+  startTimeout()
+})
+
+if (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches) {
+  window.addEventListener('blur', () => {
+    startTimeout()
+  })
+}
+
+window.addEventListener('focus', async () => {
+  stopTimeout()
+})
+
+// const locked = await isLocked()
+// console.log('isLocked: ', locked)
+isLocked().then(res => console.log('isLocked: ', res))
 
 </script>

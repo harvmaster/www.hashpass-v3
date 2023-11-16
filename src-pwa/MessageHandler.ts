@@ -25,9 +25,15 @@ export const messageHandler = (manager: HashManager, message: Message): Response
       case 'generatePassword':
         return data(manager.generatePassword(message.params.service, message.params.algorithm))
       case 'isValidPin':
-        return data(manager.isValidPin(message.params.pin))
+        return manager.isValidPin(message.params.pin).then(data, error)
       case 'isLocked':
         return data(manager.isLocked())
+      case 'startTimeout':
+        manager.startTimeout()
+        return success()
+      case 'stopTimeout':
+        manager.stopTimeout()
+        return success()
     }
   } catch (err) {
     return error(err)

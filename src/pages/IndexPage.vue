@@ -46,10 +46,11 @@ import { useServiceStore } from 'stores/service'
 import hp3 from 'src/crypto/passwordGenerators/hp3';
 import messageHandler from 'src/ServiceWorker/MessgeHandler';
 import { createBase58Password } from 'src/ServiceWorker/PasswordGenerators'
-import { setSecret, unlockSecret } from 'src/ServiceWorker/User'
+import { setSecret, unlockSecret, isLocked } from 'src/ServiceWorker/User'
 import { encrypt, decrypt } from 'src/crypto/aes';
 
 const test = async () => {
+  const locked = await isLocked()
   // console.time('hashing')
   // const password = serviceStore.services.slice(0, 10).map(service => {
   //   return hp3('secret', service.name)
@@ -57,39 +58,39 @@ const test = async () => {
   // console.timeEnd('hashing')
   // messageHandler.createMessage('test', 'test')
   
-  const secret = await encrypt('test', 'test')
-  await setSecret(secret)
-  await unlockSecret('test')
+  // const secret = await encrypt('test', 'test')
+  // await setSecret(secret)
+  // await unlockSecret('test')
 
-  const generateRandomString = () => {
-    const length = 12
-    let result = ''
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    const charactersLength = characters.length
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    }
-    return result
-  }
+  // const generateRandomString = () => {
+  //   const length = 12
+  //   let result = ''
+  //   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  //   const charactersLength = characters.length
+  //   for (let i = 0; i < length; i++) {
+  //     result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  //   }
+  //   return result
+  // }
 
-  const bigtest = new Array(10).fill(0).map(() => {
-    return generateRandomString()
-  })
-  console.time('hashing')
-  const password = bigtest.map(service => {
-    return createBase58Password(service)
-  })
+  // const bigtest = new Array(10).fill(0).map(() => {
+  //   return generateRandomString()
+  // })
+  // console.time('hashing')
+  // const password = bigtest.map(service => {
+  //   return createBase58Password(service)
+  // })
   
-  await Promise.all(password)
-  console.timeEnd('hashing')
+  // await Promise.all(password)
+  // console.timeEnd('hashing')
 
-  console.time('memo')
-  const password2 = bigtest.map(service => {
-    return createBase58Password(service)
-  })
+  // console.time('memo')
+  // const password2 = bigtest.map(service => {
+  //   return createBase58Password(service)
+  // })
   
-  await Promise.all(password2)
-  console.timeEnd('memo')
+  // await Promise.all(password2)
+  // console.timeEnd('memo')
 
   // console.time('local')
   // const local = bigtest.map(service => {

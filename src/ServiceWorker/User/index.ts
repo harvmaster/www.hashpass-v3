@@ -1,2 +1,6 @@
-export {default as setSecret } from './setSecret'
-export {default as unlockSecret } from './unlockSecret'
+export { default as setSecret } from './setSecret'
+export { default as unlockSecret } from './unlockSecret'
+export { default as isLocked } from './isLocked'
+export { default as startTimeout } from './startTimeout'
+export { default as stopTimeout } from './stopTimeout'
+export { default as isValidPin } from './isValidPin'
