@@ -1,5 +1,5 @@
 import { createBase58Password, createHexPassword, createLegacyPassword } from './PasswordGenerators'
-import { setSecret, unlockSecret, isLocked, isValidPin, startTimeout, stopTimeout } from './User'
+import { setSecret, unlockSecret, isLocked, isValidPin, startTimeout, stopTimeout, lockSecret } from './User'
 import { encrypt, decrypt } from 'src/crypto/aes';
 
 import { Notify } from 'quasar';
@@ -80,12 +80,25 @@ export const testUnlockSecret = async (pin = '1234') => {
   }
 }
 
+export const testLockSecret = async () => {
+  console.log('Testing lockSecret...')
+  try {
+    await lockSecret()
+    console.log('lockSecret passed')
+  } catch (err) {
+    console.log(err)
+    console.log('lockSecret failed')
+  }
+
+}
+
 export const testIsLocked = async () => {
   console.log('Testing isLocked...')
   try {
     const locked = await isLocked()
     if (!locked) throw new Error('isLocked failed')
     console.log('isLocked passed')
+    return locked 
   } catch (err) {
     console.log(err)
     console.log('isLocked failed')

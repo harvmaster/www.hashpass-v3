@@ -104,7 +104,10 @@
               <q-btn class="col-12" flat label="unlock secret" color="primary" @click="() => testUnlockSecret()"/>
             </div>
             <div class="col-12 row">
-              <q-btn class="col-12" flat label="isLocked" color="primary" @click="() => testIsLocked()" />
+              <q-btn class="col-12" flat label="lock secret" color="primary" @click="() => testLockSecret()"/>
+            </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="isLocked" color="primary" @click="() => testIsLockedWithNotification()" />
             </div>
             <div class="col-12 row">
               <q-btn class="col-12" flat label="isValidPin True" color="primary" @click="() => testIsValidPin()" />
@@ -131,7 +134,7 @@
   
 <script setup lang="ts">
 import { setSecret, unlockSecret, isLocked } from 'src/ServiceWorker/User'
-import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, testIsValidPin, testIsInvalidPin, testStartTimeout, testStopTimeout } from 'src/ServiceWorker/tests'
+import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, testIsValidPin, testIsInvalidPin, testStartTimeout, testStopTimeout, testLockSecret } from 'src/ServiceWorker/tests'
 
 import ToggleSelect from 'src/components/Inputs/ToggleSelect.vue'
 import { computed, ref } from 'vue'
@@ -208,6 +211,23 @@ const testPasswordGeneratorsWithNotification = async () => {
   }
   Notify.create({
     message: `Legacy: ${result.legacy}, Hex: ${result.hex}, Base58: ${result.base58}`,
+    color: result ? 'green' : 'red',
+    icon: result ? 'check' : 'close'
+  })
+}
+
+const testIsLockedWithNotification = async () => {
+  const result = await testIsLocked()
+  if (!result) {
+    return Notify.create({
+      message: 'Test Failed',
+      color: 'red',
+      icon: 'close'
+    })
+  }
+
+  return Notify.create({
+    message: `isLocked: ${result.data}`,
     color: result ? 'green' : 'red',
     icon: result ? 'check' : 'close'
   })
