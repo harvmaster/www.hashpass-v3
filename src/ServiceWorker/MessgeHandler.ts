@@ -1,11 +1,11 @@
 class MessageHandler {
-  promises: Record<string, {resolve: (value: string) => void, reject: (value: string) => void}> = {};
+  promises: Record<string, {resolve: (value: ResponseMessage) => void, reject: (value: ErrorMessage) => void}> = {};
 
   constructor() {
     this.promises = {};
   }
 
-  createMessage(type: string, params: any = {}): Promise<any> {
+  createMessage(type: string, params: any = {}): Promise<ResponseMessage> {
     return new Promise((resolve, reject) => {
       const id = Math.random().toString(36).substring(2, 14);
       this.promises[id] = { resolve, reject };
@@ -14,7 +14,7 @@ class MessageHandler {
   }
 
   handleMessage(event: MessageEvent) {
-    const { id, result } = event.data;
+    const { id, result }: { id: string, result: ResponseMessage } = event.data;
     // console.log('SW RETURNED VALUE: ', id, result)
 
     if (result.type == 'error') {

@@ -1,7 +1,7 @@
 import messageHandler from "../MessgeHandler";
 
-export const isLocked = () => {
-  return messageHandler.createMessage('isLocked')
+export const isLocked = (): Promise<DataMessage> => {
+  return messageHandler.createMessage('isLocked') as Promise<DataMessage>;
 }
 
 export default isLocked

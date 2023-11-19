@@ -1,7 +1,7 @@
 import messageHandler from "../MessgeHandler";
 
-export const stopTimeout = () => {
-  return messageHandler.createMessage('stopTimeout')
+export const stopTimeout = (): Promise<SuccessMessage> => {
+  return messageHandler.createMessage('stopTimeout') as Promise<SuccessMessage>;
 }
 
 export default stopTimeout
