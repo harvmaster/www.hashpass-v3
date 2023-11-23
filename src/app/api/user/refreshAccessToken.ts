@@ -2,11 +2,11 @@ import { api } from "src/boot/axios";
 
 export const refreshAccessToken = async (refresh_token: string) => {
   try {
-    const { data } = await api.post<ServerResponse<UserAuthResponse>>('/user/refreshAccessToken', {
+    const { data } = await api.post<UserAuthResponse>('/user/refreshAccessToken', {
       refresh_token
     })
 
-    return data.data
+    return data
   } catch (err: any) {
     console.log(err)
     if (err?.response?.status === 400) {
