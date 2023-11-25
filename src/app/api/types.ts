@@ -19,3 +19,7 @@ interface ServerError {
 interface ServerResponse<T> {
   data: T;
 }
+
+type ServiceEncoding = 'legacy' | 'hex' | 'base58'
+
+interface ServiceResponse extends Service {}
