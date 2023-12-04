@@ -17,9 +17,19 @@ interface AccessTokenResponse {
 }
 
 interface ServerError {
-  error: string;
+  error: string | {
+    [key: string]: string;
+  };
 }
 
 interface ServerResponse<T> {
   data: T;
+}
+
+interface ServiceResponse {
+  service: Service;
+}
+
+interface ServiceListResponse {
+  services: Service[]
 }

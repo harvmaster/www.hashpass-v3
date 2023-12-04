@@ -1,12 +1,9 @@
 import { api } from 'boot/axios'
 
-export const createService = async (name: string, domain: string, encoding: ServiceEncoding = 'base58', logo = '') => {
+export const updateService = async (updateBody: Service) => {
   try {
-    const { data } = await api.post<ServiceResponse>('/service/create', {
-      name,
-      domain,
-      encoding,
-      logo
+    const { data } = await api.post<ServiceResponse>('/service/update', {
+      ...updateBody
     })
 
     return data.service
@@ -23,4 +20,4 @@ export const createService = async (name: string, domain: string, encoding: Serv
   }
 }
 
-export default createService
+export default updateService

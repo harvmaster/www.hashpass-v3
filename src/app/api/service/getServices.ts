@@ -1,15 +1,10 @@
 import { api } from 'boot/axios'
 
-export const createService = async (name: string, domain: string, encoding: ServiceEncoding = 'base58', logo = '') => {
+export const getServices = async () => {
   try {
-    const { data } = await api.post<ServiceResponse>('/service/create', {
-      name,
-      domain,
-      encoding,
-      logo
-    })
+    const { data } = await api.post<ServiceListResponse>('/service/')
 
-    return data.service
+    return data.services
   } catch (err: any) {
     console.log(err)
     if (err?.response?.status === 400) {
@@ -23,4 +18,4 @@ export const createService = async (name: string, domain: string, encoding: Serv
   }
 }
 
-export default createService
+export default getServices
