@@ -1,6 +1,6 @@
 # Hashpass (www)
 
-A Quasar Project
+A Stateless Password manager with secure cross device syncing
 
 ## Install the dependencies
 ```bash
