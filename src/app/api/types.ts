@@ -12,6 +12,10 @@ interface UserAuthResponse {
   access_token: string;
 }
 
+interface AccessTokenResponse {
+  access_token: string;
+}
+
 interface ServerError {
   error: string;
 }
@@ -19,7 +23,3 @@ interface ServerError {
 interface ServerResponse<T> {
   data: T;
 }
-
-type ServiceEncoding = 'legacy' | 'hex' | 'base58'
-
-interface ServiceResponse extends Service {}

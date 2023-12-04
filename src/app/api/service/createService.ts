@@ -1,15 +1,11 @@
 import { api } from 'boot/axios'
 
-interface ServiceResponse {
-
-
-}
-
-export const createService = async (name: string, domain: string) => {
+export const createService = async (name: string, domain: string, logo = '') => {
   try {
-    const { data } = await api.post<ServiceResponse>('/service/create', {
+    const { data } = await api.post<Service>('/service/create', {
       name,
-      domain
+      domain,
+      logo
     })
 
     return data
