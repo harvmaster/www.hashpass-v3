@@ -33,3 +33,21 @@ interface ServiceResponse {
 interface ServiceListResponse {
   services: Service[]
 }
+
+interface ServiceDeleteResponse {
+  status: 'success'
+}
+
+interface LogoResponse {
+  logos: {
+    src: string;
+    size: {
+      width: number;
+      height: number;
+    }
+  }[]
+}
+
+interface DomainRecommendationResponse {
+  domains: string[]
+}
