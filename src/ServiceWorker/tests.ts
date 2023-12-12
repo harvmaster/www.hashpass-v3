@@ -161,6 +161,7 @@ export const testEncryption = async () => {
     console.log(encrypted)
 
     const decrypted = await decryptSW(encrypted.data)
+    console.log(decrypted)
 
     if (!(decrypted?.data == 'test')) throw new Error('Decryption failed to give correct value')
 

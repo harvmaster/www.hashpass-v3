@@ -26,12 +26,16 @@ interface ServerResponse<T> {
   data: T;
 }
 
+interface EncryptedService extends Service {
+  encrypted: true
+}
+
 interface ServiceResponse {
-  service: Service;
+  service: EncryptedService;
 }
 
 interface ServiceListResponse {
-  services: Service[]
+  services: EncryptedService[]
 }
 
 interface ServiceDeleteResponse {

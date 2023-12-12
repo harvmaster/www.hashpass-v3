@@ -74,7 +74,7 @@ type Message = SetSecretMessage | UnlockSecretMessage | LockMessage | GeneratePa
 
 interface ErrorMessage {
   type: 'error'
-  error: any
+  error: any | Error
 }
 
 interface SuccessMessage {
