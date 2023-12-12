@@ -39,7 +39,7 @@
             </div>
             <div class="col-12 row" @click="togglePassword" v-touch-hold="copyPassword">
               <div class="col-auto password text-weight-bold">
-                {{ showPassword ? 'WWWWWWWWWWWWWWWWW' : '●●●●●●●●●●●●●●●●'  }}
+                {{ showPassword ? password : '●●●●●●●●●●●●●●●●'  }}
                 <div class="password-copied text-caption text-weight-regular text-primary" :style="passwordCopyStyle">
                   Copied
                 </div>
@@ -54,7 +54,7 @@
               Algorithm
             </div>
             <div class="col-12 q-py-sm">
-              <algorithm-selector />
+              <algorithm-selector @change="onEncodingChanged"/>
             </div>
           </div>
 
@@ -135,7 +135,7 @@
 <script setup lang="ts">
 
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed, onActivated, onMounted } from 'vue';
+import { ref, computed, onActivated, onMounted, watch } from 'vue';
 import { FastAverageColor } from 'fast-average-color'
 import { QImg } from 'quasar';
 
@@ -144,14 +144,13 @@ import { useServiceStore } from 'stores/service'
 import VerticalDrawer from 'components/Layout/VerticalDrawer.vue'
 import algorithmSelector from '../../components/Inputs/AlgoSelector.vue'
 import { generateColors, generateSeed } from '../../components/App/misc/DynamicLetterLogo'
-
+import { createBase58Password, createHexPassword, createLegacyPassword } from 'src/ServiceWorker'; 
 
 const router = useRouter()
 const route = useRoute()
 const serviceStore = useServiceStore()
 
 const service = ref<Service | null | undefined>(null)
-
 
 onMounted(() => {
   console.log('activated')
@@ -179,9 +178,23 @@ const showPassword = ref(false)
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
-const computedShowPassword = computed(() => {
-  return showPassword.value ? 'true' : 'false'
+const password = ref('')
+watch(() => {
+  service?.value?.encoding
+}, () => {
+  generatePassword()
 })
+const generatePassword = async () => {
+  const encoding = service.value?.encoding || 'base58'
+  const p = await createPassword()
+  console.log(p)
+  return p?.data
+}
+
+const onEncodingChanged = (encoding: ServiceEncoding) => {
+  service.value!.encoding = encoding
+  generatePassword()
+}
 
 const backgroundColor = computed(() => {
   if (!logoElement.value) {
@@ -221,5 +234,22 @@ const copyPassword = () => {
   }, 2000)
 
   console.log('copied')
+}
+
+const createPassword = async () => {
+  const encoding = service.value?.encoding || 'base58'
+  const serviceName = service.value?.name || ''
+  
+  try {
+    if (encoding === 'base58') {
+      return await createBase58Password(serviceName)
+    } else if (encoding === 'hex') {
+      return await createHexPassword(serviceName)
+    } else if (encoding === 'legacy') {
+      return await createLegacyPassword(serviceName)
+    }
+  } catch (err) {
+    console.log(err)
+  }
 }
 </script>

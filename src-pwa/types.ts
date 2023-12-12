@@ -56,7 +56,21 @@ interface StopTimeoutMessage {
   type: 'stopTimeout'
 }
 
-type Message = SetSecretMessage | UnlockSecretMessage | LockMessage | GeneratePasswordMessage | IsValidPinMessage | IsLockedMessage | StartTimeoutMessage | StopTimeoutMessage
+interface EncryptMessage {
+  type: 'encrypt'
+  params: {
+    data: string
+  }
+}
+
+interface DecryptMessage {
+  type: 'decrypt'
+  params: {
+    data: string
+  }
+}
+
+type Message = SetSecretMessage | UnlockSecretMessage | LockMessage | GeneratePasswordMessage | IsValidPinMessage | IsLockedMessage | StartTimeoutMessage | StopTimeoutMessage | EncryptMessage | DecryptMessage
 
 interface ErrorMessage {
   type: 'error'

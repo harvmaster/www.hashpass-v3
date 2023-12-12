@@ -1,5 +1,6 @@
 import { createBase58Password, createHexPassword, createLegacyPassword } from './PasswordGenerators'
 import { setSecret, unlockSecret, isLocked, isValidPin, startTimeout, stopTimeout, lockSecret } from './User'
+import { encrypt as encryptSW, decrypt as decryptSW } from './Encryption'
 import { encrypt, decrypt } from 'src/crypto/aes';
 
 import { Notify } from 'quasar';
@@ -151,6 +152,25 @@ export const testStopTimeout = async () => {
     console.log(err)
     console.log('stopTimeout failed')
   }
+}
+
+export const testEncryption = async () => {
+  console.log('Testing encrypt...')
+  try {
+    const encrypted = await encryptSW('test')
+    console.log(encrypted)
+
+    const decrypted = await decryptSW(encrypted.data)
+
+    if (!(decrypted?.data == 'test')) throw new Error('Decryption failed to give correct value')
+
+    console.log('encrypt passed')
+    return encrypted
+  } catch (err) {
+    console.log(err)
+    console.log('encrypt failed')
+  }
+
 }
 
 export const testAll = async () => {

@@ -17,10 +17,9 @@ export class aesKey {
   }
 
   async encrypt(data: string) {
-    const iv = window.crypto.getRandomValues(new Uint8Array(12))
-    
     const caller = getCaller()
 
+    const iv = caller.crypto.getRandomValues(new Uint8Array(12))
     const encrypted = await caller.crypto.subtle.encrypt(
       {
         name: 'AES-GCM',

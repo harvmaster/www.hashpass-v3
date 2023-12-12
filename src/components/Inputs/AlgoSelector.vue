@@ -18,34 +18,32 @@
 import { ref, computed, defineEmits, defineExpose } from 'vue'
 import ToggleSelect from 'src/components/Inputs/ToggleSelect.vue'
 
-const emits = defineEmits<{
-  change: (algorithm: string) => void
-}>()
+const emits = defineEmits(['change'])
 
-
-const selectedAlgorithm = ref('v1')
+const selectedAlgorithm = ref('hex')
 const selectAlgorithm = (algorithm: string) => {
   selectedAlgorithm.value = algorithm
+  emits('change', selectedAlgorithm.value);
 }
 
 const algorithms = [
   {
     label: 'v1',
-    value: 'v1',
+    value: 'legacy',
     color: '#ef5350',
     description: 'Lgeacy Algorithm',
     security: 'Low'
   },
   {
     label: 'v2',
-    value: 'v2',
+    value: 'hex',
     color: '#ffca28',
     description: 'Hex Based Output',
     security: 'Secure'
   },
   {
     label: 'v3',
-    value: 'v3',
+    value: 'base58',
     color: '#66bb6a',
     description: 'Base58 Output',
     security: 'Recommended'

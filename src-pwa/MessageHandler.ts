@@ -1,4 +1,4 @@
-export const messageHandler = (manager: HashManager, message: Message): ResponseMessage | Promise<ResponseMessage> => {
+export const messageHandler = async (manager: HashManager, message: Message): Promise<ResponseMessage> => {
 
   const success = (): SuccessMessage => ({
     type: 'success'
@@ -18,22 +18,26 @@ export const messageHandler = (manager: HashManager, message: Message): Response
         manager.setSecret(message.params.secret)
         return success()
       case 'unlockSecret':
-        return manager.unlockSecret(message.params.pin).then(success, error)
+        return await manager.unlockSecret(message.params.pin).then(success, error)
       case 'lock':
         manager.lock()
         return success()
       case 'generatePassword':
         return data(manager.generatePassword(message.params.service, message.params.algorithm))
       case 'isValidPin':
-        return manager.isValidPin(message.params.pin).then(data, error)
+        return await manager.isValidPin(message.params.pin).then(data, error)
       case 'isLocked':
-        return data(manager.isLocked())
+        return await data(manager.isLocked())
       case 'startTimeout':
         manager.startTimeout()
         return success()
       case 'stopTimeout':
         manager.stopTimeout()
         return success()
+      case 'encrypt':
+        return await manager.encrypt(message.params.data).then(data, error)
+      case 'decrypt':
+        return await manager.decrypt(message.params.data).then(data, error)
     }
   } catch (err) {
     return error(err)

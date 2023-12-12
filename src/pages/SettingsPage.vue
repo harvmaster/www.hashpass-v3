@@ -121,6 +121,9 @@
             <div class="col-12 row">
               <q-btn class="col-12" flat label="stop timeout" color="primary" @click="() => testStopTimeout()" />
             </div>
+            <div class="col-12 row">
+              <q-btn class="col-12" flat label="Test Encryption" color="primary" @click="() => testEncryption()" />
+            </div>
           </div>  
         </div>
       </q-expansion-item>
@@ -134,7 +137,7 @@
   
 <script setup lang="ts">
 import { setSecret, unlockSecret, isLocked } from 'src/ServiceWorker/User'
-import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, testIsValidPin, testIsInvalidPin, testStartTimeout, testStopTimeout, testLockSecret } from 'src/ServiceWorker/tests'
+import { testPasswordGenerators, testSetSecret, testUnlockSecret, testIsLocked, testIsValidPin, testIsInvalidPin, testStartTimeout, testStopTimeout, testLockSecret, testEncryption } from 'src/ServiceWorker/tests'
 
 import ToggleSelect from 'src/components/Inputs/ToggleSelect.vue'
 import { computed, ref } from 'vue'
